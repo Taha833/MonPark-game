@@ -1,9 +1,14 @@
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import Waitlist from './Pages/Waitlist';
 
 function App() {
   return (
-    <div >
-      
-    </div>
+    <Router>
+    <Routes>
+      <Route path="/waitlist" element={<Waitlist />} exact/>
+    </Routes>
+
+    </Router>
   );
 }
 
