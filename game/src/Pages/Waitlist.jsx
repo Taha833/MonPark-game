@@ -60,8 +60,8 @@ function Waitlist() {
       </div>
 
      
-        <div className='flex flex-col gap-8 z-10'>
-          <form className="flex flex-col px-5 gap-5" onSubmit={(e) => handleJoin(e)}>
+        <div className='flex flex-col gap-8 items-center z-10'>
+          <form className="flex flex-col px-5 gap-5 max-w-96 w-full" onSubmit={(e) => handleJoin(e)}>
             <input
               type="email"
               className="text-white rounded-lg px-3 py-2 text-base bg-[#150A27] border border-[#282828]"
@@ -81,8 +81,14 @@ function Waitlist() {
             <span>Stay tuned</span>
           </div>
           <div className='flex gap-4 justify-center'>
+            <a href="https:/x.com/MonPark_bot?t=S20KhU3Nc3Y4NHY-XHL8rg&s=09" target='_blank'>
+
             <img src='assets/twitter logo.svg' alt="twitter" />
+            </a>
+            <a href='https://t.me/monpark' target='_blank' >
+
             <img src='assets/telegram logo.svg' alt="telegram" />
+            </a>
           </div>
         </div>
     </div>

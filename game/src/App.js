@@ -6,7 +6,7 @@ function App() {
   return (
     <Router>
     <Routes>
-      <Route path="/waitlist" element={<Waitlist />} exact/>
+      <Route path="/" element={<Waitlist />} exact/>
       <Route path="/thankyou" element={<Thankyou />} exact/>
     </Routes>
 
