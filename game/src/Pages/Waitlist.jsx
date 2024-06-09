@@ -81,11 +81,11 @@ function Waitlist() {
             <span>Stay tuned</span>
           </div>
           <div className='flex gap-4 justify-center'>
-            <a href="https:/x.com/MonPark_bot?t=S20KhU3Nc3Y4NHY-XHL8rg&s=09" target='_blank'>
+            <a href="https:/x.com/MonPark_bot?t=S20KhU3Nc3Y4NHY-XHL8rg&s=09" target='_blank' rel="noreferrer">
 
             <img src='assets/twitter logo.svg' alt="twitter" />
             </a>
-            <a href='https://t.me/monpark' target='_blank' >
+            <a href='https://t.me/monpark' target='_blank' rel="noreferrer">
 
             <img src='assets/telegram logo.svg' alt="telegram" />
             </a>
