@@ -2,12 +2,13 @@ import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDSE74cbbPgGbuLsjm2s27K-z7FpVysZQo",
-  authDomain: "monpark-test.firebaseapp.com",
-  projectId: "monpark-test",
-  storageBucket: "monpark-test.appspot.com",
-  messagingSenderId: "302175703937",
-  appId: "1:302175703937:web:768309071fc1e4ce824e80"
+  apiKey: "AIzaSyAL8rZLxhIo3JxiKTdIZWsFfckvH1GU2_Q",
+  authDomain: "monpark-16c40.firebaseapp.com",
+  projectId: "monpark-16c40",
+  storageBucket: "monpark-16c40.appspot.com",
+  messagingSenderId: "1036011524838",
+  appId: "1:1036011524838:web:0b3fd83d6de1396a0b2127",
+  measurementId: "G-RC7RD4TYBS"
 };
 
 const app = firebase.initializeApp(firebaseConfig);
