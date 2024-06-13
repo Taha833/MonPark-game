@@ -6,7 +6,7 @@ const firebase = require("firebase/compat/app");
 db.collection('users').get().then(data => data.forEach(doc => {
     console.log(doc.data())
 }))
-// const token = '7473997158:AAEKNM0B15QoPiHTih003OCMos9Ci5tMlmY'
+
 const Token = process.env.BOT_API
 const Bot = new Telegraf(Token)
 
