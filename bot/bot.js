@@ -12,7 +12,7 @@ const Bot = new Telegraf(Token)
 
 Bot.start((ctx) => {
     const userId = ctx.message.from.id.toString();
-    console.log(userId)
+    console.log('telegram uid ', userId)
     ctx.reply('Welcome to the MonPark🐾',
         {
             reply_markup: {
@@ -43,7 +43,7 @@ Bot.command('play', async (ctx) => {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        url: 'https://e383-38-137-17-106.ngrok-free.app/house'
+                        url: 'https://345d-38-137-17-106.ngrok-free.app/house'
                     }
                 }]]
             }

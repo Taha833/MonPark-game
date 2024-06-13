@@ -52,35 +52,6 @@ function App() {
 
   // })
 
-
-  // useEffect(() => {
-
-  //   // Event listener for window close
-  //   const handleBeforeUnload = () => {
-  //     const timestamp = firebase.firestore.FieldValue.serverTimestamp()
-
-  //     db.collection('users').doc('1500').set({
-  //       tgId: '1500',
-  //       last_active: timestamp,
-  //       feed_left: 100,
-  //       total_income: 0,
-  //       level: 1,
-  //       income_per_hour: 0,
-  //       shop: []
-  //     })
-
-  //     console.log('close')
-
-  //   };
-
-  //   window.addEventListener('beforeunload', () => handleBeforeUnload());
-
-  //   // Clean up the event listener on component unmount
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, []);
-
   return (
     <Router>
       <div className='bg-gradient h-screen'>
