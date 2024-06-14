@@ -2,7 +2,7 @@ import React from 'react'
 
 function Footer() {
     return (
-        <nav className='flex justify-between max-w-[325px] mx-auto items-center w-full mt-auto p-2'>
+        <nav className='flex justify-between max-w-[325px] mx-auto items-center w-full p-2'>
             <div className='text-white flex flex-col items-center cursor-pointer'>
                 <img src="assets/game/house.svg" alt="house" />
                 <span>House</span>

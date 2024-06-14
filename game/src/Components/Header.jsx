@@ -3,7 +3,7 @@ import React from 'react'
 function Header() {
     return (
         <div>
-            <div className='text-white flex justify-center gap-3 pt-28 w-full max-w-[325px] mx-auto text-[12px] text-center'>
+            <div className='text-white flex justify-center gap-3 pt-16 w-full max-w-[325px] mx-auto text-[12px] text-center'>
                 <div className='bg-[#421F78] rounded-2xl p-3'>
                     <span>
                         Feed per tap
