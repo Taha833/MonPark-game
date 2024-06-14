@@ -3,11 +3,39 @@ const { Telegraf } = require('telegraf');
 const db = require('./firebase');
 const firebase = require("firebase/compat/app");
 
+
+
+const express = require('express');
+const cors = require('cors')
+const app = express();
+app.use(express.json());
+
+app.use(cors())
+
+app.post('/api', (req, res) => {
+    console.log('api working ', req.body)
+    res.json({ message: 'Hello from API!' });
+})
+
+app.get('/', (req, res) => {
+    res.send('Hello from my Express server!');
+});
+
+app.listen('8000', () => {
+    console.log('Server is running on port 8000');
+})
+
+
+
+
+
+
+
 db.collection('users').get().then(data => data.forEach(doc => {
     console.log(doc.data())
 }))
 
-const Token = process.env.BOT_API
+const Token = process.env.NODE_ENV === 'production' ? process.env.BOT_API : process.env.TEST_API
 const Bot = new Telegraf(Token)
 
 Bot.start((ctx) => {
@@ -43,7 +71,7 @@ Bot.command('play', async (ctx) => {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        url: 'https://345d-38-137-17-106.ngrok-free.app/house'
+                        url: 'https://4994-38-137-17-106.ngrok-free.app/house'
                     }
                 }]]
             }
