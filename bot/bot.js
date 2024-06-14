@@ -10,7 +10,12 @@ const cors = require('cors')
 const app = express();
 app.use(express.json());
 
-app.use(cors())
+app.use(cors({
+    origin: [
+        'https://monpark.xyz',
+        'http://localhost:3000'
+    ]
+}))
 
 app.post('/api', (req, res) => {
     console.log('api working ', req.body)
