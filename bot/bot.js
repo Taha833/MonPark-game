@@ -13,7 +13,8 @@ app.use(express.json());
 app.use(cors({
     origin: [
         'https://monpark.xyz',
-        'http://localhost:3000'
+        'http://localhost:3000',
+        'https://2c71-38-137-17-106.ngrok-free.app'
     ]
 }))
 
