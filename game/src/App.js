@@ -4,15 +4,24 @@ import Thankyou from './Pages/Thankyou';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import House from './Pages/House';
+import { useEffect } from 'react';
 // import { useEffect } from 'react';
 // import db from './firebase';
 // import firebase from 'firebase/compat/app';
 
-// const tele = window.Telegram.WebApp
+const tg = window.Telegram.WebApp
 
 function App() {
   // const location = useLocation();
   const showHeader = !['/friends', '/thankyou', '/'].includes(window.location.pathname);;
+
+  useEffect(() => {
+    tg.ready()
+    tg.onEvent('webapp_closed', function (event) {
+      console.log('closed');
+      // Handle the new message here
+    });
+  }, [])
 
   // useEffect(() => {
   //   // tele.ready()

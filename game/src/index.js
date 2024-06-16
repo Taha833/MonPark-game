@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 
 if ('serviceWorker' in navigator) {
+  alert('service worker reg')
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service-worker.js')
@@ -15,6 +16,7 @@ if ('serviceWorker' in navigator) {
       });
   });
 } else {
+  alert('service worker not reg')
   console.log('no service worker')
 }
 

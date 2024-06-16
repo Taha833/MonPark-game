@@ -1,44 +1,70 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 function House({ progress }) {
 
     progress = 20
     const progressValue = Math.min(Math.max(progress, 0), 100);
 
-    const [data, setData] = useState({ val: 0 });
-
+    const [data, setData] = useState(0);
+    const dataRef = useRef(0)
     // Update local data
     const handleDataChange = () => {
-        setData({ val: 100 });
+        dataRef.current = dataRef.current + 1
 
     };
 
     useEffect(() => {
-        const handleBeforeUnload = (event) => {
+        const handleBeforeUnload = (event, type) => {
             event.preventDefault();
             event.returnValue = ''; // Required for Chrome
+            const txt = document.createElement('div')
+            txt.innerText = 'Service Worker'
             console.log('reload')
-            console.log(data)
             // Send data to the service worker
             if (navigator.serviceWorker) {
-                navigator.serviceWorker.controller.postMessage(data);
+                navigator.serviceWorker.controller.postMessage({ type, data: dataRef.current });
                 console.log('nav')
             }
         };
 
+        fetch('https://monpark-game-production.up.railway.app/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data
+            }),
+        });
 
 
+        document.addEventListener('visibilitychange', e => {
+            if (document.visibilityState === "hidden") {
+                handleBeforeUnload(e, 'visibility')
+            } else {
+                handleBeforeUnload(e, 'still active')
+
+            }
+        })
 
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('beforeunload', e => handleBeforeUnload(e, 'beforeunload'));
+
+        window.addEventListener('pagehide', e => handleBeforeUnload(e, 'pagehide'))
+        window.addEventListener('unload', e => handleBeforeUnload(e, 'unload'))
 
         return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('beforeunload', e => handleBeforeUnload(e, 'visibility'));
+            document.removeEventListener('visibilitychange', e => handleBeforeUnload(e, 'beforeunload'))
+            window.removeEventListener('pagehide', e => handleBeforeUnload(e, 'pagehide'))
+            window.removeEventListener('unload', e => handleBeforeUnload(e, 'unload'))
         };
     }, [data]);
 
 
-
+    useEffect(() => {
+        console.log(dataRef.current)
+    }, [])
 
     useEffect(() => {
         const egg = document.getElementById('egg')
@@ -48,6 +74,7 @@ function House({ progress }) {
             console.log("targets", e.targetTouches.length)
             console.log("changed", e.changedTouches.length)
             handleDataChange()
+            setData(prev => prev + 1)
         })
 
         document.addEventListener('touchstart', e => {
@@ -103,7 +130,7 @@ function House({ progress }) {
             <div className='flex max-w-[325px] mx-auto justify-between w-full'>
                 <div className='text-white flex gap-3'>
                     <img src="assets/game/tabler_bowl-spoon.svg" alt="bowl" />
-                    <span>124 / 500</span>
+                    <span>{dataRef.current} / 500</span>
                 </div>
                 <div className='text-white flex gap-3'>
                     <img src="assets/game/kitchen.svg" alt="kitchen" />
