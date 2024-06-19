@@ -14,7 +14,7 @@ app.use(cors({
     origin: [
         'https://monpark.xyz',
         'http://localhost:3000',
-        'https://2ca5-38-137-17-71.ngrok-free.app'
+        'https://fe75-38-137-17-71.ngrok-free.app'
     ]
 }))
 
@@ -77,7 +77,7 @@ Bot.command('play', async (ctx) => {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        url: 'https://2ca5-38-137-17-71.ngrok-free.app/'
+                        url: 'https://fe75-38-137-17-71.ngrok-free.app'
                     }
                 }]]
             }
