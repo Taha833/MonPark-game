@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const db = require('./firebase');
-const firebase = require("firebase/compat/app");
 const port = process.env.PORT || 8000;
 
 
@@ -14,13 +13,28 @@ app.use(cors({
     origin: [
         'https://monpark.xyz',
         'http://localhost:3000',
-        'https://fe75-38-137-17-71.ngrok-free.app'
+        'https://af60-38-137-17-71.ngrok-free.app'
     ]
 }))
 
-app.post('/api', (req, res) => {
-    console.log('api working ', req.body)
-    res.json({ message: 'Hello from API!' });
+app.post('/api', async (req, res) => {
+    const { data } = req.body;
+
+    try {
+        if (typeof data === 'object') {
+
+            // console.log(req.body)
+            // console.log(data, data.tgId)
+            const docRef = db.collection('users').doc(data.tgId)
+            await docRef.update(data)
+            res.json({ message: 'data saved' });
+        }
+    } catch (err) {
+        console.log('api err', err)
+
+        res.status(500).json({ err })
+    }
+
 })
 
 app.get('/', (req, res) => {
@@ -60,24 +74,12 @@ Bot.start((ctx) => {
 })
 
 Bot.command('play', async (ctx) => {
-    const tg_id = ctx.message.from.id.toString();
-    const timestamp = firebase.firestore.FieldValue.serverTimestamp()
-    // await db.collection('users').doc(tg_id).set({
-    //     tg_id,
-    //     last_active: timestamp,
-    //     feed_left: 100,
-    //     total_income: 0,
-    //     level: 1,
-    //     income_per_hour: 0,
-    //     shop: []
-    // })
-
-    ctx.reply('Play game now',
+    ctx.reply('Play game now test',
         {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        url: 'https://fe75-38-137-17-71.ngrok-free.app'
+                        url: 'https://af60-38-137-17-71.ngrok-free.app'
                     }
                 }]]
             }
