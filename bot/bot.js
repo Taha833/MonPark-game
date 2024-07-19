@@ -427,8 +427,8 @@ Bot.start((ctx) => {
                 reply_markup: {
                     inline_keyboard: [[{
                         text: 'Join Waitlist', web_app: {
-                            // url: 'https://monpark.xyz'
-                            url: ngrok + '/waitlist'
+                            url: 'https://monpark.xyz'
+                            // url: ngrok + '/waitlist'
                         }
                     }]]
                 }
