@@ -121,6 +121,100 @@ app.post('/upgrade/feedpertap', async (req, res) => {
 
 })
 
+app.post('/buy', async (req, res) => {
+    const { item, userData } = req.body
+    try {
+        const userDb = db.collection('users').doc(userData.tgId)
+        const userRef = await userDb.get()
+        const userShop = userRef.data().shop
+
+        const alreadyBought = userShop.find(shopItem => shopItem.name === item.name) && true
+
+        // check if eligible to buy
+        // eligibility -> Level, money
+        if (!alreadyBought && userRef.data().level < item.unlockAge) {
+            return res.json({ message: 'Not old enough to buy', type: 'age' });
+        }
+        if (!alreadyBought && userRef.data().totalIncome < item.baseCost) return res.json({ message: 'Not enough money to buy', type: 'money' })
+
+        if (alreadyBought && userRef.data().totalIncome < item.upgCost) return res.json({ message: 'Not enough money to buy', type: 'money' })
+
+        const calculateUpgCost = () => {
+            const newCost = item.baseCost * Math.pow(1.5, item.currLevel || 0)
+            console.log(newCost)
+            return Math.floor(newCost)
+        }
+
+        const calculateUpgIncome = () => {
+            const newIncome = item.baseRev * Math.pow(1.15, item.currLevel || 0)
+            console.log(newIncome)
+            return Math.floor(newIncome)
+        }
+
+        const upgCost = calculateUpgCost()
+        const upgIncome = calculateUpgIncome()
+
+        const itemIndex = userShop.findIndex(shopItem => shopItem.name === item.name)
+
+        if (itemIndex === -1) {
+
+            userShop.push({
+                name: item.name,
+                incomePerHour: item.baseRev,
+                currLevel: 1,
+                upgCost,
+                upgIncome,
+                baseCost: item.baseCost,
+                baseRev: item.baseRev
+            })
+        } else {
+            userShop[itemIndex] = {
+                ...userShop[itemIndex],
+                name: item.name,
+                incomePerHour: item.upgIncome,
+                currLevel: item.currLevel + 1,
+                upgCost,
+                upgIncome,
+            }
+        }
+
+        console.log(userShop)
+
+        const totalIncome = alreadyBought ? userRef.data().totalIncome - item.upgCost : userRef.data().totalIncome - item.baseCost
+
+        // const incomePerHour = alreadyBought ? userRef.data().incomePerHour + (item.upgIncome - item.incomePerHour) : userRef.data().incomePerHour + item.baseRev
+        const incomePerHour = alreadyBought && item.upgIncome === item.incomePerHour ? userRef.data().incomePerHour + item.upgIncome : alreadyBought && item.upgIncome !== item.incomePerHour ? userRef.data().incomePerHour + (item.upgIncome - item.incomePerHour) : userRef.data().incomePerHour + item.baseRev;
+        await userDb.update({
+            shop: userShop,
+            totalIncome,
+            incomePerHour
+
+        })
+
+        const mergedData = {
+            ...userRef.data(),
+            shop: userShop,
+            incomePerHour,
+            totalIncome
+        }
+        console.log(item.name, ' bought')
+        res.json({ message: 'bought', userData: mergedData })
+        // res.json({ message: 'got it' })
+    } catch (err) {
+        console.error(err)
+        res.json(err)
+    }
+
+
+})
+
+
+
+
+
+
+
+
 app.post('/api', async (req, res) => {
     const { data } = req.body;
     try {
