@@ -1,21 +1,30 @@
+let server = 'http://localhost:8000'
+
 self.addEventListener('message', async (event) => {
-    const data = event.data;
 
-    try {
-        const response = await fetch('https://monpark-game-production.up.railway.app/api', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-            console.log('Data saved to server');
-        } else {
-            console.error('Failed to save data to server');
-        }
-    } catch (error) {
-        console.error('Error saving data to server:', error);
+    if (event.data && event.data.server) {
+        server = event.data.server
     }
+    if (event.data) {
+        const data = event.data;
+        try {
+            const response = await fetch(server + '/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                console.log('Data saved to server');
+            } else {
+                console.error('Failed to save data to server');
+            }
+        } catch (error) {
+            console.error('Error saving data to server:', error);
+        }
+    }
+
+
 });
