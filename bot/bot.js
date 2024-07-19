@@ -297,7 +297,18 @@ app.post('/buyFood', async (req, res) => {
 })
 
 
+app.get('/foodPrice/:tgId', async (req, res) => {
+    const { tgId } = req.params
+    try {
+        const resultArr = await calculateFoodCost(tgId)
+        res.json({ foodPrice: resultArr })
 
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+
+})
 
 app.post('/api', async (req, res) => {
     const { data } = req.body;
