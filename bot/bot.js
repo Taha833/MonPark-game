@@ -91,6 +91,35 @@ app.get('/feedpertap/:tgId', async (req, res) => {
 
 })
 
+app.post('/upgrade/feedpertap', async (req, res) => {
+    const { tgId } = req.body
+    try {
+        const docRef = db.collection('users').doc(tgId)
+        const doc = await docRef.get()
+        const docData = await doc.data()
+        const foodPerTap = docData.foodPerTap
+        const userTotalIncome = docData.totalIncome
+        const cost = calculateFeedPerTapCost(foodPerTap)
+
+        await docRef.update({
+            foodPerTap: foodPerTap + 1,
+            totalIncome: userTotalIncome - cost
+        })
+
+        const userData = {
+            ...docData,
+            foodPerTap: foodPerTap + 1,
+            totalIncome: userTotalIncome - cost
+        }
+
+        res.json({ userData, message: 'FeedTap upgraded to level ' + foodPerTap })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+
+})
 
 app.post('/api', async (req, res) => {
     const { data } = req.body;
