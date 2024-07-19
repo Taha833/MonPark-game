@@ -208,9 +208,93 @@ app.post('/buy', async (req, res) => {
 
 })
 
+app.post('/income', async (req, res) => {
+    const { userData } = req.body
+    try {
+        const userDb = db.collection('users').doc(userData.tgId)
+        const userRef = await userDb.get()
+        const incomePerHour = await userRef.data().incomePerHour
+        const { lastActive } = await userRef.data()
+        const currDate = new Date()
+        const diff = currDate - lastActive.toDate() // milliseconds
+        const diffSeconds = Math.floor(diff / 1000) // seconds
+        const incomeGenerated = Math.floor((incomePerHour / 3600) * diffSeconds)
 
+        console.log(diffSeconds);
+        console.log(incomePerHour)
+        console.log(incomePerHour / 3600)
+        console.log(incomeGenerated)
+        // x income -> 60 min
+        // 60 min -> 3600 seconds
+        // 3600 seconds -> x income
+        // 1 second -> x/3600
+        await userDb.update({ totalIncome: userRef.data().totalIncome + incomeGenerated })
+        res.json({ diffSeconds, incomeGenerated })
 
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+})
 
+const calculateFoodCost = async (tgId, foodUserWant) => {
+    const userDb = db.collection('users').doc(tgId)
+    const userRef = await userDb.get()
+    const userAge = userRef.data().level
+    const userTotalIncome = userRef.data().totalIncome
+    const basePrice = 5 // per food
+
+    if (!foodUserWant) {
+        const foodAmt = [100, 200, 500]
+        const foodPriceArr = []
+
+        for (const food of foodAmt) {
+            const price = Math.floor(food * (basePrice) * (1 + 0.05 * userAge) * (1 + 0.01 * Math.log10(userTotalIncome)))
+
+            const key = foodAmt[foodAmt.indexOf(food)]
+            foodPriceArr.push({ [key]: price })
+        }
+
+        const resultArr = [...foodPriceArr]
+        return resultArr
+    } else {
+        const price = Math.floor(foodUserWant * (basePrice) * (1 + 0.05 * userAge) * (1 + 0.01 * Math.log10(userTotalIncome)))
+
+        return { price, userRef, userDb }
+    }
+}
+
+app.post('/buyFood', async (req, res) => {
+    const { food, tgId, } = req.body
+    try {
+        console.log(food)
+        const result = await calculateFoodCost(tgId, food)
+        const { price, userRef, userDb } = result
+        const userTotalIncome = userRef.data().totalIncome
+        const foodLeft = userRef.data().foodLeft
+        if (userTotalIncome < price) return res.json({ message: 'Not enough money to buy' });
+
+        await userDb.update({
+            foodLeft: foodLeft + food,
+            totalIncome: userTotalIncome - price
+        })
+
+        const userData = {
+            ...userRef.data(),
+            foodLeft: foodLeft + food,
+            totalIncome: userTotalIncome - price
+        }
+
+        res.json({ message: `${food} successfully bought`, userData })
+
+        console.log(price)
+        console.log(userTotalIncome)
+
+    } catch (err) {
+        console.log(err)
+    }
+
+})
 
 
 
