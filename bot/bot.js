@@ -328,6 +328,54 @@ app.post('/api', async (req, res) => {
 
 })
 
+app.post('/generate-invite', async (req, res) => {
+    const { tgId } = req.body
+    // const inviteLink = `https://t.me/monparkTest_bot?start=ref_${tgId}`
+    const inviteLink = `https://t.me/monparkTest_bot/monparkTest?startapp=ref_${tgId}`
+    res.json({ inviteLink })
+
+})
+
+app.post('/ref', async (req, res) => {
+    const { refUserId, tgId } = req.body
+    const userRef = db.collection('users').doc(tgId) // new user
+    userRef.get().then(doc => {
+        if (doc.exists) { // new user already exists, no need to reward
+            console.log('user exists')
+            return res.json({ message: 'user already exists' })
+        } else {
+            const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
+            const reward = 500
+
+            const newData = {
+                tgId,
+                lastActive: timestamp,
+                totalIncome: 2000 + reward,
+                incomePerHour: 0,
+                shop: [],
+                level: 0,
+                foodLeft: 1000,
+                foodEaten: 0,
+                refLim: 500,
+                petAssigned: '',
+                foodPerTap: 1,
+                feedToNextLevel: 3000
+            }
+
+            const refUserDb = db.collection('users').doc(refUserId)
+
+            const friends = []
+            friends.push({
+                frTgId: tgId
+            })
+
+            userRef.update({ newData, totalIncome: refUserDb.get().data().totalIncome + reward }) // added new user
+            refUserDb.update({ friends }) // updated old user
+            res.json({ message: 'data saved' });
+        }
+    })
+    // console.log(refUserId, tgId)
+})
 
 app.get('/', (req, res) => {
     res.send('Hello from my Express server!');
