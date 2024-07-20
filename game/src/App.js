@@ -170,10 +170,10 @@ function App() {
             <Route path="/ref/:refUserId" element={<Start />} />
             <Route path="/waitlist" element={<Waitlist />} exact />
             <Route path="/thankyou" element={<Thankyou />} exact />
-            <Route path="/house" element={<House />} exact />
-            <Route path="/shop/:section" element={<Shop />} />
-            <Route path="/kitchen" element={<Kitchen />} />
-            <Route path="/friends" element={<Friends />} />
+            <Route path="/house" element={<House server={server} />} exact />
+            <Route path="/shop/:section" element={<Shop server={server} />} />
+            <Route path="/kitchen" element={<Kitchen server={server} />} />
+            <Route path="/friends" element={<Friends server={server} />} />
             <Route path="/earn" element={<Earn />} />
           </Routes>
           {!['/', '/waitlist'].some(route => route === window.location.pathname) &&
