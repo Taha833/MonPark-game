@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 
-const ngrok = 'https://5220-101-0-50-163.ngrok-free.app'
+const ngrok = 'https://3005-101-0-50-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -427,7 +427,7 @@ Bot.start((ctx) => {
                 reply_markup: {
                     inline_keyboard: [[{
                         text: 'Join Waitlist', web_app: {
-                            url: 'https://monpark.xyz'
+                            url: 'https://monpark.xyz/waitlist'
                             // url: ngrok + '/waitlist'
                         }
                     }]]
