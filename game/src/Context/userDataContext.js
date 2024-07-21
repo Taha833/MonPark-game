@@ -12,35 +12,37 @@ export const UserDataProvider = ({ children, navigate, location }) => {
     const [initLoad, setInitLoad] = useState(false)
 
     useEffect(() => {
-        console.log('context', userData)
-        const checkUser = () => {
+        if(window.location.pathname !== "/waitlist"){
 
-            const initData = tg.initData
-            const query = new URLSearchParams(initData)
-            const tgUserData = JSON.parse(query.get('user'))
-            const tgId = String(tgUserData.id)
-
-            const checkDoc = async () => {
-                const docRef = db.collection('users').doc(tgId)
-                const doc = await docRef.get()
-                if (doc.exists) {
-                    setUserData(userData.length === 0 ? doc.data() : userData)
-                    console.log('data', doc.data())
+            console.log('context', userData)
+            const checkUser = () => {
+                
+                const initData = tg.initData
+                const query = new URLSearchParams(initData)
+                const tgUserData = JSON.parse(query.get('user'))
+                const tgId = String(tgUserData.id)
+                
+                const checkDoc = async () => {
+                    const docRef = db.collection('users').doc(tgId)
+                    const doc = await docRef.get()
+                    if (doc.exists) {
+                        setUserData(userData.length === 0 ? doc.data() : userData)
+                        console.log('data', doc.data())
+                    }
+                    return doc.exists
                 }
-                return doc.exists
-            }
-            checkDoc()
+                checkDoc()
                 .then(exists => {
                     if (exists) {
                         setReturningUser() // set user to localStorage
                         console.log('exists', exists)
                         if (location.pathname === "/" || location.pathname.includes('/ref')) navigate('/house')
-
-
+                        
+                        
                     } else {
                         console.log('not exist')
                         const timestamp = firebase.firestore.FieldValue.serverTimestamp()
-
+                        
                         const newData = {
                             tgId,
                             lastActive: timestamp,
@@ -54,9 +56,9 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                             petAssigned: '',
                             foodPerTap: 1,
                             feedToNextLevel: 3000
-
+                            
                         }
-
+                        
                         db.collection('users').doc(tgId).set(newData).then(() => {
                             console.log('changed')
                             setUserData(newData)
@@ -64,14 +66,15 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                                 navigate('/house')
                             }, 2000)
                         })
-
+                        
                     }
                 })
                 .catch(err => console.error(err))
-
+                
+            }
+            checkUser()
         }
-        checkUser()
-        // eslint-disable-next-line
+            // eslint-disable-next-line
     }, [navigate])
 
     return (

@@ -97,7 +97,10 @@ function App() {
     const handleBeforeUnload = (event, type) => {
       // event.preventDefault();
       // event.returnValue = ''; // Required for Chrome
-      navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });
+      if(window.location.pathname !== "/waitlist") {
+
+        navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });
+      }
 
     };
 
@@ -137,20 +140,24 @@ function App() {
 
 
   useEffect(() => {
-    const startParam = tg.initDataUnsafe.start_param
-    const tgId = tg.initDataUnsafe.user.id
-    if (startParam) {
-      const refUserId = startParam.split('_')[1]
-      console.log(refUserId)
+    console.log(window.location.pathname)
+    if(window.location.pathname !== '/waitlist'){
 
-      fetch(server + '/ref', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refUserId: refUserId, tgId })
-      })
-
+      const startParam = tg.initDataUnsafe.start_param
+      const tgId = tg.initDataUnsafe.user.id
+      if (startParam) {
+        const refUserId = startParam.split('_')[1]
+        console.log(refUserId)
+        
+        fetch(server + '/ref', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ refUserId: refUserId, tgId })
+        })
+        
+      }
     }
 
     //eslint-disable-next-line
