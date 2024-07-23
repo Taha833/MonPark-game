@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useUserData from '../Hooks/useUserData';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 function House({ server }) {
 
     const { userData, setUserData, initLoad, setInitLoad } = useUserData()
-    const dataRef = useRef(0)
     const [incomeModal, setIncomeModal] = useState(false)
     const [income, setIncome] = useState(0)
 
@@ -35,8 +34,11 @@ function House({ server }) {
             },
             body: JSON.stringify({ userData })
         }).then(res => res.json()).then(data => {
-            setIncomeModal(true)
-            setIncome(data.incomeGenerated)
+            if (data.incomeGenerated > 0) {
+
+                setIncomeModal(true)
+                setIncome(data.incomeGenerated)
+            }
         })
     }
 
@@ -156,10 +158,6 @@ function House({ server }) {
                     </div>
 
                     <div className='flex max-w-[325px] mx-auto justify-between w-full'>
-                        <div className='text-white flex gap-3'>
-                            <img src="assets/game/tabler_bowl-spoon.svg" alt="bowl" />
-                            <span>{dataRef.current} / 500</span>
-                        </div>
                         <div className='text-white flex gap-3'>
                             <img src="assets/game/kitchen.svg" alt="bowl" />
                             <Link to="/kitchen">Kitchen</Link>
