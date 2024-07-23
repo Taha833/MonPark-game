@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 
-const ngrok = 'https://2e73-101-0-50-163.ngrok-free.app'
+const ngrok = 'https://2d69-101-0-50-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -338,19 +338,21 @@ app.post('/generate-invite', async (req, res) => {
 
 app.post('/ref', async (req, res) => {
     const { refUserId, tgId } = req.body
-    const userRef = db.collection('users').doc(tgId) // new user
+    console.log(refUserId, tgId)
+    const userRef = db.collection('users').doc(String(tgId)) // new user
     userRef.get().then(doc => {
         if (doc.exists) { // new user already exists, no need to reward
             console.log('user exists')
             return res.json({ message: 'user already exists' })
         } else {
             const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
-            const reward = 500
+            const rewardOldUser = 250
+            const rewardNewUser = 50
 
             const newData = {
                 tgId,
                 lastActive: timestamp,
-                totalIncome: 2000 + reward,
+                totalIncome: 2000 + rewardNewUser,
                 incomePerHour: 0,
                 shop: [],
                 level: 0,
@@ -369,12 +371,12 @@ app.post('/ref', async (req, res) => {
                 frTgId: tgId
             })
 
-            userRef.update({ newData, totalIncome: refUserDb.get().data().totalIncome + reward }) // added new user
-            refUserDb.update({ friends }) // updated old user
+            userRef.set({ ...newData }) // added new user
+            refUserDb.update({ friends, totalIncome: refUserDb.get().data() + rewardOldUser }) // updated old user
             res.json({ message: 'data saved' });
         }
     })
-    // console.log(refUserId, tgId)
+    console.log(refUserId, tgId)
 })
 
 app.get('/', (req, res) => {
@@ -444,8 +446,8 @@ Bot.command('play', async (ctx) => {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        // url: ngrok
-                        url: 'https://monpark.xyz'
+                        url: ngrok
+                        // url: 'https://monpark.xyz'
                     }
                 }]]
             }
