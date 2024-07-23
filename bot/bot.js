@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 
-const ngrok = 'https://3005-101-0-50-163.ngrok-free.app'
+const ngrok = 'https://2e73-101-0-50-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -444,7 +444,8 @@ Bot.command('play', async (ctx) => {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        url: ngrok
+                        // url: ngrok
+                        url: 'https://monpark.xyz'
                     }
                 }]]
             }
