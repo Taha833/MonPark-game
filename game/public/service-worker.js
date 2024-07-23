@@ -1,4 +1,4 @@
-let server = 'http://localhost:8000'
+let server = 'monpark-game-production.up.railway.app'
 
 self.addEventListener('message', async (event) => {
 

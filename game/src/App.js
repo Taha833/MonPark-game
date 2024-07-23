@@ -14,11 +14,11 @@ import Friends from './Pages/Friends';
 import Earn from './Pages/Earn';
 const tg = window.Telegram.WebApp
 
-
+// change development to production
 
 function App() {
 
-  const server = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
+  const server = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
   const { userData, setInitLoad } = useUserData()
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
@@ -97,7 +97,7 @@ function App() {
     const handleBeforeUnload = (event, type) => {
       // event.preventDefault();
       // event.returnValue = ''; // Required for Chrome
-      if(window.location.pathname !== "/waitlist") {
+      if (window.location.pathname !== "/waitlist") {
 
         navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });
       }
@@ -141,14 +141,14 @@ function App() {
 
   useEffect(() => {
     console.log(window.location.pathname)
-    if(window.location.pathname !== '/waitlist'){
+    if (window.location.pathname !== '/waitlist') {
 
       const startParam = tg.initDataUnsafe.start_param
       const tgId = tg.initDataUnsafe.user.id
       if (startParam) {
         const refUserId = startParam.split('_')[1]
         console.log(refUserId)
-        
+
         fetch(server + '/ref', {
           method: 'POST',
           headers: {
@@ -156,7 +156,7 @@ function App() {
           },
           body: JSON.stringify({ refUserId: refUserId, tgId })
         })
-        
+
       }
     }
 
