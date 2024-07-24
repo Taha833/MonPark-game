@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 // The GLITCH - When keeps on clicking the screen upon level upgrade, the server is called mutliple times and it upgrades multiple levels !!!
 
 
-const ngrok = 'https://2d69-101-0-50-163.ngrok-free.app'
+const ngrok = 'https://a049-101-0-50-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
