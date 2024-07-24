@@ -18,7 +18,11 @@ const tg = window.Telegram.WebApp
 
 function App() {
 
-  const server = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
+  // const server = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
+  const server = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
+
+  console.log(process.env.NODE_ENV)
+
   const { userData, setInitLoad } = useUserData()
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
@@ -28,11 +32,11 @@ function App() {
       setInitLoad(true)
     })
 
-    return () => {
-      window.removeEventListener('load', () => {
-        setInitLoad(true)
-      })
-    }
+    // return () => {
+    //   window.removeEventListener('load', () => {
+    //     setInitLoad(false)
+    //   })
+    // }
     //eslint-disable-next-line
   }, [])
 
@@ -98,7 +102,7 @@ function App() {
       // event.preventDefault();
       // event.returnValue = ''; // Required for Chrome
       if (window.location.pathname !== "/waitlist") {
-
+        console.log(navigator)
         navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });
       }
 
