@@ -180,12 +180,12 @@ function App() {
 
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id) &&
             <Header />}
 
           <Routes>
             <Route path="/waitlist" element={<Waitlist />} exact />
-            {[5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id) ?
+            {[5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id) ?
               <>
 
                 <Route path="/" element={<Start />} />
@@ -206,7 +206,7 @@ function App() {
             }
           </Routes>
           {!['/', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id) &&
             <Footer />}
         </div>
       </div>
