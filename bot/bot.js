@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 // The GLITCH - When keeps on clicking the screen upon level upgrade, the server is called mutliple times and it upgrades multiple levels !!!
 
 
-const ngrok = 'https://a049-101-0-50-163.ngrok-free.app'
+const ngrok = 'https://8b65-101-0-50-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -29,47 +29,60 @@ app.use(cors({
 
 app.post('/upgradeLevel', async (req, res) => {
     const { tgId, foodEaten, foodLeft } = req.body
-    const docRef = db.collection('users').doc(tgId)
-    const doc = await docRef.get()
-    const docData = await doc.data()
-    const feedToNextLevel = docData.level === 0 ? 5000 : Math.floor(docData.feedToNextLevel * 1.35) // 35% increase in prev value
 
-    if (docData.level === 0) {
-        const pets = ['creature1', 'creature2', 'creature3', 'creature4']
-        const selectedPet = pets[Math.floor(Math.random() * 4)]
+    db.runTransaction(async (transaction) => {
+        const docRef = db.collection('users').doc(tgId)
+        const doc = await docRef.get()
+        const docData = await doc.data()
+        const feedToNextLevel = docData.level === 0 ? 5000 : Math.floor(docData.feedToNextLevel * 1.35) // 35% increase in prev value
 
-        const updatedData = {
-            petAssigned: selectedPet,
-            level: docData.level + 1,
-            // foodPerTap: docData.foodPerTap + 1,
-            feedToNextLevel,
-            foodEaten,
-            foodLeft
-        };
+        const lastLevelUpTime = docData.lastLevelUpTime || 0
+        const currentTime = Date.now()
+        if (currentTime - lastLevelUpTime < 1000) { // 1 second cooldown
+            // throw new Error("Level up too frequent. Please wait.")
+            res.json({ message: 'Level upgrade error' })
+        }
 
-        await docRef.update(updatedData);
-        const mergedData = { ...docData, ...updatedData };
-        res.json({ message: 'level upgraded', mergedData })
-    } else if (docData.level !== 0) {
-        const refLim = Math.floor(docData.refLim * 1.5)
+        if (docData.level === 0) {
+            const pets = ['creature1', 'creature2', 'creature3', 'creature4']
+            const selectedPet = pets[Math.floor(Math.random() * 4)]
 
+            const updatedData = {
+                petAssigned: selectedPet,
+                level: docData.level + 1,
+                feedToNextLevel,
+                foodEaten,
+                foodLeft,
+                lastLevelUpTime: currentTime
+            };
 
-        const updatedData = {
-            level: docData.level + 1,
-            // foodPerTap: docData.foodPerTap + 1,
-            feedToNextLevel,
-            foodEaten,
-            foodLeft,
-            refLim
-        };
-
-        await docRef.update(updatedData);
-        const mergedData = { ...docData, ...updatedData };
-        res.json({ message: `level upgraded to ${updatedData.level}`, mergedData })
-    }
+            // await docRef.update(updatedData);
+            transaction.update(docRef, updatedData)
+            const mergedData = { ...docData, ...updatedData };
+            res.json({ message: 'level upgraded', mergedData })
+        } else if (docData.level !== 0) {
+            const refLim = Math.floor(docData.refLim * 1.5)
 
 
-    console.log(req.body)
+            const updatedData = {
+                level: docData.level + 1,
+                feedToNextLevel,
+                foodEaten,
+                foodLeft,
+                refLim,
+                lastLevelUpTime: currentTime
+            };
+
+            // await docRef.update(updatedData);
+            transaction.update(docRef, updatedData)
+            console.log('transaction end')
+
+            const mergedData = { ...docData, ...updatedData };
+            res.json({ message: `level upgraded to ${updatedData.level}`, mergedData })
+        }
+
+    })
+    // console.log(req.body)
 })
 
 const calculateFeedPerTapCost = (foodPerTap) => {
