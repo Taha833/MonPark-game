@@ -383,7 +383,7 @@ app.post('/ref', async (req, res) => {
                 feedToNextLevel: 3000
             }
 
-
+            // keep the previous friends aswell, it deleted the other items in the friends array
             const friends = []
             friends.push({
                 frTgId: tgId
