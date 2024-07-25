@@ -10,10 +10,12 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/service-worker.js')
       .then(registration => {
-        // Pass environment info to the service worker
-        // const server = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
         const server = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_SERVER : 'http://localhost:8000'
-        registration.active.postMessage({ server });
+
+        if (registration.active) {
+          registration.active.postMessage({ server });
+        }
+
       })
       .catch(error => {
         console.error('Service Worker registration failed:', error);
