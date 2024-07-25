@@ -1,4 +1,4 @@
-let server = 'monpark-game-production.up.railway.app'
+let server = 'https://monpark-game-production.up.railway.app'
 
 self.addEventListener('message', async (event) => {
 
