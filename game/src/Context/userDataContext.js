@@ -12,7 +12,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
     const [initLoad, setInitLoad] = useState(false)
 
     useEffect(() => {
-        if (window.location.pathname !== "/waitlist" && [5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id)) {
+        if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id)) {
 
             console.log('context', userData)
             const checkUser = () => {
