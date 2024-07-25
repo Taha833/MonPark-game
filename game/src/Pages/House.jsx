@@ -3,12 +3,23 @@ import useUserData from '../Hooks/useUserData';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from 'react-router-dom';
-function House({ server }) {
+function House({ server, refMsg }) {
 
     const { userData, setUserData, initLoad, setInitLoad } = useUserData()
     const [incomeModal, setIncomeModal] = useState(false)
     const [income, setIncome] = useState(0)
     const [upgrading, setUpgrading] = useState(false)
+
+    useEffect(() => {
+        if (refMsg.length !== 0) {
+            toast.info(refMsg, {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                theme: "dark",
+            })
+        }
+    }, [refMsg])
 
     // Update local data
     const handleDataChange = () => {

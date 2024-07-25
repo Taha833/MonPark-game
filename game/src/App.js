@@ -4,7 +4,7 @@ import Thankyou from './Pages/Thankyou';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import House from './Pages/House';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Start from './Pages/Start';
 import useUserData from './Hooks/useUserData';
 import deepEqual from 'deep-equal';
@@ -26,6 +26,8 @@ function App() {
   const { userData, setInitLoad } = useUserData()
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
+  const [refMsg, setRefMsg] = useState('')
+
 
   useEffect(() => {
     window.addEventListener('load', () => {
@@ -159,8 +161,11 @@ function App() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ refUserId: refUserId, tgId })
-        })
+        }).then(res => res.json()).then(data => {
 
+          console.log(data)
+          setRefMsg(data.message)
+        })
       }
     }
 
@@ -181,7 +186,7 @@ function App() {
             <Route path="/ref/:refUserId" element={<Start />} />
             <Route path="/waitlist" element={<Waitlist />} exact />
             <Route path="/thankyou" element={<Thankyou />} exact />
-            <Route path="/house" element={<House server={server} />} exact />
+            <Route path="/house" element={<House server={server} refMsg={refMsg} />} exact />
             <Route path="/shop/:section" element={<Shop server={server} />} />
             <Route path="/kitchen" element={<Kitchen server={server} />} />
             <Route path="/friends" element={<Friends server={server} />} />

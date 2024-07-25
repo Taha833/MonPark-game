@@ -347,15 +347,18 @@ app.post('/api', async (req, res) => {
 app.post('/generate-invite', async (req, res) => {
     const { tgId } = req.body
     // const inviteLink = `https://t.me/monparkTest_bot?start=ref_${tgId}`
-    const inviteLink = `https://t.me/monparkTest_bot/monparkTest?startapp=ref_${tgId}`
+    const inviteLink = `https://t.me/MonPark_bot/monpark?startapp=ref_${tgId}`
     res.json({ inviteLink })
 
 })
 
 app.post('/ref', async (req, res) => {
     const { refUserId, tgId } = req.body
-    console.log(refUserId, tgId)
     const userRef = db.collection('users').doc(String(tgId)) // new user
+    const refUserDb = db.collection('users').doc(String(refUserId))
+    const refUserDoc = await refUserDb.get()
+    const refData = await refUserDoc.data()
+
     userRef.get().then(doc => {
         if (doc.exists) { // new user already exists, no need to reward
             console.log('user exists')
@@ -366,7 +369,7 @@ app.post('/ref', async (req, res) => {
             const rewardNewUser = 50
 
             const newData = {
-                tgId,
+                refUserId,
                 lastActive: timestamp,
                 totalIncome: 2000 + rewardNewUser,
                 incomePerHour: 0,
@@ -380,16 +383,15 @@ app.post('/ref', async (req, res) => {
                 feedToNextLevel: 3000
             }
 
-            const refUserDb = db.collection('users').doc(refUserId)
 
             const friends = []
             friends.push({
                 frTgId: tgId
             })
 
-            userRef.set({ ...newData }) // added new user
-            refUserDb.update({ friends, totalIncome: refUserDb.get().data() + rewardOldUser }) // updated old user
-            res.json({ message: 'data saved' });
+            userRef.set({ ...newData }) // added new users
+            refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
+            res.json({ message: 'New user joined!' });
         }
     })
     console.log(refUserId, tgId)
