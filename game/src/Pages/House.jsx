@@ -8,6 +8,7 @@ function House({ server }) {
     const { userData, setUserData, initLoad, setInitLoad } = useUserData()
     const [incomeModal, setIncomeModal] = useState(false)
     const [income, setIncome] = useState(0)
+    const [upgrading, setUpgrading] = useState(false)
 
     // Update local data
     const handleDataChange = () => {
@@ -26,7 +27,6 @@ function House({ server }) {
 
     }
     const handleIncome = async () => {
-        console.log('func')
         await fetch(server + '/income', {
             method: "POST",
             headers: {
@@ -52,20 +52,22 @@ function House({ server }) {
     }, [initLoad])
 
     useEffect(() => {
-        if (userData.foodEaten !== undefined && userData.feedToNextLevel !== undefined && userData.foodEaten >= userData.feedToNextLevel) {
+        if (userData.foodEaten !== undefined && userData.feedToNextLevel !== undefined && userData.foodEaten >= userData.feedToNextLevel && upgrading === false) {
+            setUpgrading(true)
             fetch(server + '/upgradeLevel', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
             }).then(res => res.json()).then((data) => {
                 console.log(data)
+                setUpgrading(false)
                 setUserData(data.mergedData)
                 notify(data.mergedData.level)
             })
         }
 
         //eslint-disable-next-line
-    }, [userData])
+    }, [userData.feedToNextLevel, userData.foodEaten])
 
 
     useEffect(() => {
