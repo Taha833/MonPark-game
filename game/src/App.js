@@ -172,28 +172,41 @@ function App() {
     //eslint-disable-next-line
   }, [])
 
+  console.log(tg.initDataUnsafe.user.id)
+
   return (
     <>
       <div className='bg-gradient max-h-screen h-screen overflow-x-auto'>
 
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id) &&
             <Header />}
 
           <Routes>
-            <Route path="/" element={<Start />} />
-            <Route path="/ref/:refUserId" element={<Start />} />
             <Route path="/waitlist" element={<Waitlist />} exact />
-            <Route path="/thankyou" element={<Thankyou />} exact />
-            <Route path="/house" element={<House server={server} refMsg={refMsg} />} exact />
-            <Route path="/shop/:section" element={<Shop server={server} />} />
-            <Route path="/kitchen" element={<Kitchen server={server} />} />
-            <Route path="/friends" element={<Friends server={server} />} />
-            <Route path="/earn" element={<Earn />} />
+            {[5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id) ?
+              <>
+
+                <Route path="/" element={<Start />} />
+                <Route path="/ref/:refUserId" element={<Start />} />
+                <Route path="/thankyou" element={<Thankyou />} exact />
+                <Route path="/house" element={<House server={server} refMsg={refMsg} />} exact />
+                <Route path="/shop/:section" element={<Shop server={server} />} />
+                <Route path="/kitchen" element={<Kitchen server={server} />} />
+                <Route path="/friends" element={<Friends server={server} />} />
+                <Route path="/earn" element={<Earn />} />
+              </>
+              :
+              <Route path="/" element={
+                <div className='flex justify-center items-center h-full'>
+                  <h1 className='text-white text-xl font-bold'>MonPark coming soon!</h1>
+                </div>}
+              />
+            }
           </Routes>
           {!['/', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266].some(id => tg.initDataUnsafe.user.id === id) &&
             <Footer />}
         </div>
       </div>
