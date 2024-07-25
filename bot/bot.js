@@ -462,7 +462,7 @@ Bot.command('play', async (ctx) => {
             reply_markup: {
                 inline_keyboard: [[{
                     text: 'Open', web_app: {
-                        url: ngrok
+                        url: process.env.NODE_ENV === "production" ? 'https://monpark.xyz' : ngrok
                         // url: 'https://monpark.xyz'
                     }
                 }]]
