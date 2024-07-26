@@ -30,9 +30,19 @@ function App() {
 
 
   useEffect(() => {
-    window.addEventListener('load', () => {
-      setInitLoad(true)
-    })
+    console.log('app load')
+    // window.addEventListener('load', () => {
+    //   console.log('event load in app')
+    //   setInitLoad(true)
+    // })
+
+    // if(document.readyState === "complete"){
+    //   console.log('ready state')
+    //   setInitLoad(true)
+
+    // }
+
+    setInitLoad(true)
 
     // return () => {
     //   window.removeEventListener('load', () => {
@@ -101,8 +111,8 @@ function App() {
 
 
     const handleBeforeUnload = (event, type) => {
-      // event.preventDefault();
-      // event.returnValue = ''; // Required for Chrome
+      event.preventDefault();
+      event.returnValue = ''; // Required for Chrome
       if (window.location.pathname !== "/waitlist") {
         console.log(navigator)
         navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });

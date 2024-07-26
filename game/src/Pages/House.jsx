@@ -46,7 +46,7 @@ function House({ server, refMsg }) {
             body: JSON.stringify({ userData })
         }).then(res => res.json()).then(data => {
             if (data.incomeGenerated > 0) {
-
+                console.log(data)
                 setIncomeModal(true)
                 setIncome(data.incomeGenerated)
             }
@@ -56,6 +56,7 @@ function House({ server, refMsg }) {
     useEffect(() => {
         console.log('loaddata ', initLoad)
         if (initLoad) {
+            console.log('income working!')
             handleIncome()
             setInitLoad(false)
         }
