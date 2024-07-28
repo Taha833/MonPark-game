@@ -1,5 +1,13 @@
 let server = 'https://monpark-game-production.up.railway.app'
 
+self.addEventListener('install', e => {
+    console.log('sw installed!')
+})
+
+self.addEventListener('activate', e => {
+    console.log('sw activated!')
+})
+
 self.addEventListener('message', async (event) => {
 
     if (event.data && event.data.server) {
