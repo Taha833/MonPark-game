@@ -9,6 +9,7 @@ function House({ server, refMsg }) {
     const [incomeModal, setIncomeModal] = useState(false)
     const [income, setIncome] = useState(0)
     const [upgrading, setUpgrading] = useState(false)
+    const [poop, setPoop] = useState(0)
 
     useEffect(() => {
         if (refMsg.length !== 0) {
@@ -49,6 +50,7 @@ function House({ server, refMsg }) {
                 console.log(data)
                 setIncomeModal(true)
                 setIncome(data.incomeGenerated)
+                setPoop(data.totalTestPoop)
             }
         })
     }
@@ -81,21 +83,42 @@ function House({ server, refMsg }) {
         //eslint-disable-next-line
     }, [userData.feedToNextLevel, userData.foodEaten])
 
+    const handlePoop = () => {
+        toast.info(poop + ' poop claimed! Feed your pet.', {
+            position: "top-right",
+            autoClose: 5000,
+            closeOnClick: true,
+            theme: "dark",
+        })
+    }
+
 
     useEffect(() => {
+        console.log(poop)
         const egg = document.getElementById('egg')
         const creature = document.getElementById('creature')
+        const handleTouch = (e) => {
+            egg.classList.add('scale-95')
+            console.log("touches", e.touches.length)
+            console.log("targets", e.targetTouches.length)
+            console.log("changed", e.changedTouches.length)
+            if (poop === 0) {
+
+                handleDataChange()
+            }
+            if (poop > 0) {
+                console.log('poop')
+                console.log(poop)
+                handlePoop()
+                setPoop(0)
+
+            }
+            console.log('this is data', userData)
+        }
         if ((!incomeModal && egg) || (!incomeModal && creature)) {
             console.log('event init')
-            egg.addEventListener('touchstart', e => {
-                egg.classList.add('scale-95')
-                console.log("touches", e.touches.length)
-                console.log("targets", e.targetTouches.length)
-                console.log("changed", e.changedTouches.length)
-                handleDataChange()
-                console.log('this is data', userData)
 
-            })
+            egg.addEventListener('touchstart', handleTouch)
 
             egg.addEventListener('touchend', e => {
                 egg.classList.remove('scale-95')
@@ -134,10 +157,10 @@ function House({ server, refMsg }) {
         }
 
         return () => {
-
+            egg?.removeEventListener('touchstart', handleTouch)
         }
         //eslint-disable-next-line
-    }, [incomeModal])
+    }, [incomeModal, poop])
 
     const handleIncomeUpdate = () => {
         setUserData({ ...userData, totalIncome: userData.totalIncome + income })
@@ -167,7 +190,7 @@ function House({ server, refMsg }) {
                     </div>
                     <div className='mx-auto flex justify-center transition-transform duration-200' id="egg">
                         {userData.level === 0 ? <img src="/assets/game/egg.svg" alt="egg" /> :
-                            <img src={`assets/game/pets/${userData.petAssigned}.svg`} alt="creature" id="creature" />
+                            <img src={poop === 0 ? `assets/game/pets/${userData.petAssigned}.svg` : `assets/game/pets/messy/${userData.petAssigned}.1.jpeg`} alt="creature" id="creature" />
                         }
                     </div>
 
