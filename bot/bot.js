@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 // The GLITCH - When keeps on clicking the screen upon level upgrade, the server is called mutliple times and it upgrades multiple levels !!!
 
 
-const ngrok = 'https://80b2-106-76-69-92.ngrok-free.app'
+const ngrok = 'https://f216-2404-7c80-44-a854-a86a-862c-e28f-c967.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -230,39 +230,47 @@ app.post('/income', async (req, res) => {
         const userDb = db.collection('users').doc(userData.tgId)
         const userRef = await userDb.get()
         const incomePerHour = await userRef.data().incomePerHour
-        const { lastActive } = await userRef.data()
-        const currDate = new Date()
-        const diff = currDate - lastActive.toDate() // milliseconds
-        const diffSeconds = Math.floor(diff / 1000) // seconds
-        const incomeGenerated = Math.floor((incomePerHour / 3600) * diffSeconds)
+        // use income per hour only if income perHour > 0 
+        if (incomePerHour > 0) {
 
-        console.log(diffSeconds);
-        console.log(incomePerHour)
-        console.log(incomePerHour / 3600)
-        console.log(incomeGenerated)
-        // x income -> 60 min
-        // 60 min -> 3600 seconds
-        // 3600 seconds -> x income
-        // 1 second -> x/3600
+            const { lastActive } = await userRef.data()
+            const currDate = new Date()
+            const diff = currDate - await lastActive.toDate() // milliseconds
+            const diffSeconds = Math.floor(diff / 1000) // seconds
+            const incomeGenerated = Math.floor((incomePerHour / 3600) * diffSeconds)
 
-        const poopPerHour = 1
-        const totalPoop = Math.floor(diffSeconds/3600) * poopPerHour
-        const totalTest = Math.floor(diffSeconds) * poopPerHour
+            console.log(diffSeconds);
+            console.log(incomePerHour)
+            console.log(incomePerHour / 3600)
+            console.log(incomeGenerated)
+            // x income -> 60 min
+            // 60 min -> 3600 seconds
+            // 3600 seconds -> x income
+            // 1 second -> x/3600
 
-        await userDb.update({ totalIncome: userRef.data().totalIncome + incomeGenerated, totalPoop, totalTest })
-        
-        
-        if(totalPoop >= 48){
-            // decrease age
+            // use poop only if level > 0
+            if (userRef.data().level > 0) {
+
+                const poopPerHour = 1
+                const totalPoop = Math.floor(diffSeconds / 3600) * poopPerHour
+                const totalTestPoop = Math.floor(diffSeconds) * poopPerHour
+
+                await userDb.update({ totalIncome: userRef.data().totalIncome + incomeGenerated, totalPoop, totalTestPoop })
+                // for frontend
+                // check if poop > 0 
+                // show messy pet
+                // on tap events -> check if poop > 0 -> on click - remove the messy part
+
+                if (totalPoop >= 48) {
+                    // decrease age
+                }
+                res.json({ diffSeconds, incomeGenerated, totalPoop, totalTestPoop })
+
+            } else {
+                res.json({ diffSeconds, incomeGenerated })
+
+            }
         }
-
-        // for frontend
-        // check if poop > 0 
-        // show messy pet
-        // on tap events -> check if poop > 0 -> on click - remove the messy part
-
-        res.json({ diffSeconds, incomeGenerated, totalPoop, totalTest })
-
     } catch (err) {
         console.log(err)
         res.status(500).json(err)
