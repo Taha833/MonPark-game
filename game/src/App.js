@@ -112,10 +112,15 @@ function App() {
 
     const handleBeforeUnload = (event, type) => {
       event.preventDefault();
-      event.returnValue = ''; // Required for Chrome
+      // event.returnValue = ''; // Required for Chrome
       if (window.location.pathname !== "/waitlist") {
-        console.log(navigator)
-        navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });
+        if (navigator && navigator.serviceWorker && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({ type, data: userDataRef.current });
+        } else {
+          console.log('sw not registered yet')
+          console.log(navigator.serviceWorker)
+        }
+
       }
 
     };
