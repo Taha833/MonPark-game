@@ -51,6 +51,19 @@ function House({ server, refMsg }) {
                 setIncomeModal(true)
                 setIncome(data.incomeGenerated)
                 setPoop(data.totalTestPoop)
+                if(data.level){
+                    setUserData({
+                        ...userData, 
+                        level:data.level
+                    })
+
+                    toast.info('Age Decreased! - ' +  data.level,  {
+                        position: "top-right",
+                        autoClose: 5000,
+                        closeOnClick: true,
+                        theme: "dark",
+                    })
+                }
             }
         })
     }
@@ -168,6 +181,12 @@ function House({ server, refMsg }) {
     }
 
     return (
+
+        // SHOW ERROR IF THE FEED === 0
+        // SHOW ERROR IF MONEY === 0
+        // ALSO ASK IF THE SHOP ITEMS WILL BE ACCESSIBLE IF THE LEVEL DECREASE DUE TO POOP CONDITIONS
+        // REMOVE DOTS
+
         <div className={`h-full justify-between flex flex-col ${incomeModal ? 'items-center' : 'items-start'}`}>
             <ToastContainer />
             {!incomeModal &&
