@@ -200,7 +200,7 @@ function App() {
 
           <Routes>
             <Route path="/waitlist" element={<Waitlist />} exact />
-            {[5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id) ?
+            {[5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id) ?
               <>
 
                 <Route path="/" element={<Start />} />
