@@ -195,7 +195,7 @@ function App() {
 
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id) &&
             <Header />}
 
           <Routes>
@@ -221,7 +221,7 @@ function App() {
             }
           </Routes>
           {!['/', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id) &&
             <Footer />}
         </div>
       </div>
