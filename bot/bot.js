@@ -14,7 +14,8 @@ app.use((req, res, next) => {
 });
 
 
-const ngrok = 'https://b4dd-2404-7c80-44-d9ae-a3e4-deb-a511-b865.ngrok-free.app'
+
+const ngrok = 'https://1db2-106-76-69-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -114,6 +115,10 @@ app.post('/upgrade/feedpertap', async (req, res) => {
         const foodPerTap = docData.foodPerTap
         const userTotalIncome = docData.totalIncome
         const cost = calculateFeedPerTapCost(foodPerTap)
+
+        if (userTotalIncome < cost) {
+            return res.json({ message: 'Not enough money to buy' })
+        }
 
         await docRef.update({
             foodPerTap: foodPerTap + 1,
