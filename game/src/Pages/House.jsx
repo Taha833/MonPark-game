@@ -204,6 +204,7 @@ function House({ server, refMsg }) {
         // SHOW ERROR IF MONEY === 0
         // ALSO ASK IF THE SHOP ITEMS WILL BE ACCESSIBLE IF THE LEVEL DECREASE DUE TO POOP CONDITIONS
         // REMOVE DOTS
+        // STOP THE FETCH REQ IN SHOP IF THE CATEGORY CHANGES
 
         <div className={`h-full justify-between flex flex-col ${incomeModal ? 'items-center' : 'items-start'}`}>
             <ToastContainer />

@@ -95,7 +95,7 @@ function Shop({ server }) {
             <ToastContainer />
             {!selected &&
                 <>
-                    <nav className='flex max-w-[325px] mx-auto justify-between w-full bg-[#321B55] rounded-2xl py-2 px-2 items-center sticky top-0'>
+                    <nav className='flex max-w-[325px] mx-auto justify-between w-full bg-[#321B55] rounded-2xl py-2 px-2 items-center sticky top-0 z-20'>
                         <Link className={section === 'product' ? `text-white bg-[#412072] rounded-xl px-2 py-1` : 'text-gray-400 px-2 py-1'} to="/shop/product" >product</Link>
                         <Link className={section === 'skill' ? `text-white bg-[#412072] rounded-xl px-2 py-1` : 'text-gray-400 px-2 py-1'} to="/shop/skill">skill</Link>
                         <Link className={section === 'team' ? `text-white bg-[#412072] rounded-xl px-2 py-1` : 'text-gray-400 px-2 py-1'} to="/shop/team">team</Link>
