@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import useUserData from '../Hooks/useUserData';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -10,6 +10,11 @@ function House({ server, refMsg }) {
     const [income, setIncome] = useState(0)
     const [upgrading, setUpgrading] = useState(false)
     const [poop, setPoop] = useState(0)
+    const userDataRef = useRef({})
+
+    useEffect(() => {
+        userDataRef.current = userData;
+    }, [userData]);
 
     useEffect(() => {
         if (refMsg.length !== 0) {
@@ -24,9 +29,22 @@ function House({ server, refMsg }) {
 
     // Update local data
     const handleDataChange = () => {
-        setUserData(prev => ({
-            ...prev, foodEaten: prev.foodEaten + prev.foodPerTap, foodLeft: prev.foodLeft - prev.foodPerTap
-        }))
+        const currentUserData = userDataRef.current
+        if (currentUserData.foodLeft > 0 && currentUserData.foodPerTap <= currentUserData.foodLeft) {
+            setUserData(prev => ({
+                ...prev, foodEaten: prev.foodEaten + prev.foodPerTap, foodLeft: prev.foodLeft - prev.foodPerTap
+            }))
+
+            // when value becomes 0, update the db
+
+        } else {
+            toast.error('Please buy food', {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                theme: "dark",
+            })
+        }
     };
 
     const notify = (content) => {
@@ -51,13 +69,13 @@ function House({ server, refMsg }) {
                 setIncomeModal(true)
                 setIncome(data.incomeGenerated)
                 setPoop(data.totalTestPoop)
-                if(data.level){
+                if (data.level) {
                     setUserData({
-                        ...userData, 
-                        level:data.level
+                        ...userData,
+                        level: data.level
                     })
 
-                    toast.info('Age Decreased! - ' +  data.level,  {
+                    toast.info('Age Decreased! - ' + data.level, {
                         position: "top-right",
                         autoClose: 5000,
                         closeOnClick: true,

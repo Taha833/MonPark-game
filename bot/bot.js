@@ -13,10 +13,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// The GLITCH - When keeps on clicking the screen upon level upgrade, the server is called mutliple times and it upgrades multiple levels !!!
 
-
-const ngrok = 'https://fccf-2402-8100-226b-1498-c10a-daf7-6f28-7965.ngrok-free.app'
+const ngrok = 'https://b4dd-2404-7c80-44-d9ae-a3e4-deb-a511-b865.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -259,13 +257,13 @@ app.post('/income', async (req, res) => {
                 // check if poop > 0 
                 // show messy pet
                 // on tap events -> check if poop > 0 -> on click - remove the messy part
-                
+
                 const totalIncomeDb = userRef.data().totalIncome + incomeGenerated
 
                 if (totalTestPoop >= 10) {
                     // decrease age
-                    await userDb.update({totalIncome: totalIncomeDb, level:userRef.data().level - 1, totalPoop, totalTestPoop})
-                    res.json({ diffSeconds, incomeGenerated, totalPoop, totalTestPoop, level:userRef.data().level - 1 })
+                    await userDb.update({ totalIncome: totalIncomeDb, level: userRef.data().level - 1, totalPoop, totalTestPoop })
+                    res.json({ diffSeconds, incomeGenerated, totalPoop, totalTestPoop, level: userRef.data().level - 1 })
                 } else {
                     await userDb.update({ totalIncome: totalIncomeDb, totalPoop, totalTestPoop })
                     res.json({ diffSeconds, incomeGenerated, totalPoop, totalTestPoop })
