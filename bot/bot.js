@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 // The GLITCH - When keeps on clicking the screen upon level upgrade, the server is called mutliple times and it upgrades multiple levels !!!
 
 
-const ngrok = 'https://fccf-2402-8100-226b-1498-c10a-daf7-6f28-7965.ngrok-free.app'
+const ngrok = 'https://1db2-106-76-69-163.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -116,6 +116,10 @@ app.post('/upgrade/feedpertap', async (req, res) => {
         const foodPerTap = docData.foodPerTap
         const userTotalIncome = docData.totalIncome
         const cost = calculateFeedPerTapCost(foodPerTap)
+
+        if(userTotalIncome < cost){
+            return res.json({message:'Not enough money to buy'})
+        }
 
         await docRef.update({
             foodPerTap: foodPerTap + 1,

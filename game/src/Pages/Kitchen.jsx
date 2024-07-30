@@ -94,9 +94,18 @@ function Kitchen({ server }) {
                 })
             }
         }).then(data => {
-            setBoosterModal(false)
-            setBooster(null)
-            setUserData(data.userData)
+            if(data.userData){
+                setBoosterModal(false)
+                setBooster(null)
+                setUserData(data.userData)
+            } else {
+                toast.error(data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    closeOnClick: true,
+                    theme: "dark",
+                })
+            }
         })
     }
 
