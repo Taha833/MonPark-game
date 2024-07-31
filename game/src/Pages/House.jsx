@@ -228,7 +228,7 @@ function House({ server, refMsg }) {
                     </div>
                     <div className='mx-auto flex justify-center transition-transform duration-200' id="egg">
                         {userData.level === 0 ? <img src="/assets/game/egg.svg" alt="egg" /> :
-                            <img src={poop === 0 ? `assets/game/pets/${userData.petAssigned}.svg` : `assets/game/pets/messy/${userData.petAssigned}.png`} alt="creature" id="creature" width="250px" />
+                            <img src={poop === 0 ? `/assets/game/pets/${userData.petAssigned}.svg` : `/assets/game/pets/messy/${userData.petAssigned}.png`} alt="creature" id="creature" width="250px" />
                         }
                     </div>
 
