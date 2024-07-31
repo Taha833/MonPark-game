@@ -390,8 +390,8 @@ app.post('/ref', async (req, res) => {
     const refUserDb = db.collection('users').doc(String(refUserId))
     const refUserDoc = await refUserDb.get()
     const refData = await refUserDoc.data()
-
     userRef.get().then(doc => {
+        console.log('user exists ', userRef.get().data())
         if (doc.exists) { // new user already exists, no need to reward
             console.log('user exists')
             return res.json({ message: 'user already exists' })

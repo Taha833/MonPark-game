@@ -180,7 +180,10 @@ function App() {
 
           console.log(data)
           setRefMsg(data.message)
-          setUserData(data.userData)
+          if (data.userData) {
+
+            setUserData(data.userData)
+          }
         })
       }
     }
