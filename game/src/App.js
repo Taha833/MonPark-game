@@ -23,7 +23,7 @@ function App() {
 
   console.log(process.env.NODE_ENV)
 
-  const { userData, setInitLoad } = useUserData()
+  const { userData, setInitLoad, setUserData } = useUserData()
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
   const [refMsg, setRefMsg] = useState('')
@@ -180,6 +180,7 @@ function App() {
 
           console.log(data)
           setRefMsg(data.message)
+          setUserData(data.userData)
         })
       }
     }

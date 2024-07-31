@@ -418,6 +418,7 @@ app.post('/ref', async (req, res) => {
 
             // keep the previous friends aswell, it deleted the other items in the friends array
             const friends = [...refData.friends]
+            // dont add friend if already there
             friends.push({
 
                 frTgId: tgId
@@ -425,7 +426,7 @@ app.post('/ref', async (req, res) => {
 
             userRef.set({ ...newData }) // added new users
             refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
-            res.json({ message: 'New user joined!' });
+            res.json({ message: 'New user joined!', userData: userRef.get().data() });
         }
     })
     console.log(refUserId, tgId)
