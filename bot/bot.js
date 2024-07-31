@@ -399,11 +399,12 @@ app.post('/ref', async (req, res) => {
             const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
             const rewardOldUser = 250
             const rewardNewUser = 50
+            const newUserTotalIncome = 2000 + rewardNewUser
 
             const newData = {
                 refUserId,
                 lastActive: timestamp,
-                totalIncome: 2000 + rewardNewUser,
+                totalIncome: newUserTotalIncome,
                 incomePerHour: 0,
                 shop: [],
                 level: 0,
