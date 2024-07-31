@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://1db2-106-76-69-163.ngrok-free.app'
+const ngrok = 'https://vsldlngk-3000.inc1.devtunnels.ms'
 
 app.use(cors({
     origin: [
@@ -416,8 +416,9 @@ app.post('/ref', async (req, res) => {
             }
 
             // keep the previous friends aswell, it deleted the other items in the friends array
-            const friends = []
+            const friends = [...refData.friends]
             friends.push({
+
                 frTgId: tgId
             })
 
