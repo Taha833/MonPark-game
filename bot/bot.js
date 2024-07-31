@@ -379,7 +379,7 @@ app.post('/api', async (req, res) => {
 app.post('/generate-invite', async (req, res) => {
     const { tgId } = req.body
     // const inviteLink = `https://t.me/monparkTest_bot?start=ref_${tgId}`
-    const inviteLink = `https://t.me/MonPark_bot/monpark?startapp=ref_${tgId}`
+    const inviteLink = `https://t.me/MonPark_bot/monpark?startapp=ref_${1234}`
     res.json({ inviteLink })
 
 })
@@ -391,9 +391,8 @@ app.post('/ref', async (req, res) => {
     const refUserDoc = await refUserDb.get()
     const refData = await refUserDoc.data()
     userRef.get().then(doc => {
-        console.log('user exists ', doc.data())
         if (doc.exists) { // new user already exists, no need to reward
-            console.log('user exists')
+            console.log('user exists ', doc.data())
             return res.json({ message: 'user already exists' })
         } else {
             const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
@@ -416,17 +415,20 @@ app.post('/ref', async (req, res) => {
                 feedToNextLevel: 3000
             }
 
-            // keep the previous friends aswell, it deleted the other items in the friends array
+
             const friends = [...refData.friends]
+            // dont decrease the age (in poop feature) if the current level is 0
             // dont add friend if already there
             friends.push({
 
                 frTgId: tgId
             })
 
-            userRef.set({ ...newData }) // added new users
-            refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
-            res.json({ message: 'New user joined!', userData: doc.data() });
+            // userRef.set({ ...newData }) // added new users
+            // refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
+            // console.log(doc.data())
+            // res.json({ message: 'New user joined!', userData: doc.data() });
+            res.json({ message: 'New user' })
         }
     })
     console.log(refUserId, tgId)
