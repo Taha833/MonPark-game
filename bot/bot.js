@@ -391,7 +391,7 @@ app.post('/ref', async (req, res) => {
     const refUserDoc = await refUserDb.get()
     const refData = await refUserDoc.data()
     userRef.get().then(doc => {
-        console.log('user exists ', userRef.get().data())
+        console.log('user exists ', doc.data())
         if (doc.exists) { // new user already exists, no need to reward
             console.log('user exists')
             return res.json({ message: 'user already exists' })
@@ -426,7 +426,7 @@ app.post('/ref', async (req, res) => {
 
             userRef.set({ ...newData }) // added new users
             refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
-            res.json({ message: 'New user joined!', userData: userRef.get().data() });
+            res.json({ message: 'New user joined!', userData: doc.data() });
         }
     })
     console.log(refUserId, tgId)
