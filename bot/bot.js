@@ -265,7 +265,7 @@ app.post('/income', async (req, res) => {
 
                 const totalIncomeDb = userRef.data().totalIncome + incomeGenerated
 
-                if (totalTestPoop >= 10) {
+                if (totalPoop >= 48) {
                     // decrease age
                     await userDb.update({ totalIncome: totalIncomeDb, level: userRef.data().level - 1, totalPoop, totalTestPoop })
                     res.json({ diffSeconds, incomeGenerated, totalPoop, totalTestPoop, level: userRef.data().level - 1 })
