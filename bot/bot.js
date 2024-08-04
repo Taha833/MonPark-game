@@ -230,6 +230,7 @@ app.post('/buy', async (req, res) => {
 app.post('/income', async (req, res) => {
     const { userData } = req.body
     try {
+        console.log('/income ', userData)
         const userDb = db.collection('users').doc(userData.tgId)
         const userRef = await userDb.get()
         const incomePerHour = await userRef.data().incomePerHour
@@ -379,7 +380,7 @@ app.post('/api', async (req, res) => {
 app.post('/generate-invite', async (req, res) => {
     const { tgId } = req.body
     // const inviteLink = `https://t.me/monparkTest_bot?start=ref_${tgId}`
-    const inviteLink = `https://t.me/MonPark_bot/monpark?startapp=ref_${1234}`
+    const inviteLink = `https://t.me/MonPark_bot/monpark?startapp=ref_${tgId}`
     res.json({ inviteLink })
 
 })
@@ -395,13 +396,14 @@ app.post('/ref', async (req, res) => {
             console.log('user exists ', doc.data())
             return res.json({ message: 'user already exists' })
         } else {
+            console.log('added new friend')
             const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
             const rewardOldUser = 250
             const rewardNewUser = 50
             const newUserTotalIncome = 2000 + rewardNewUser
 
             const newData = {
-                refUserId,
+                tgId,
                 lastActive: timestamp,
                 totalIncome: newUserTotalIncome,
                 incomePerHour: 0,
@@ -412,7 +414,8 @@ app.post('/ref', async (req, res) => {
                 refLim: 500,
                 petAssigned: '',
                 foodPerTap: 1,
-                feedToNextLevel: 3000
+                feedToNextLevel: 3000,
+                friends: []
             }
 
 
@@ -424,11 +427,12 @@ app.post('/ref', async (req, res) => {
                 frTgId: tgId
             })
 
-            // userRef.set({ ...newData }) // added new users
-            // refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
+            userRef.set({ ...newData }) // added new users
+            console.log(newUserTotalIncome)
+            refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
             // console.log(doc.data())
-            // res.json({ message: 'New user joined!', userData: doc.data() });
-            res.json({ message: 'New user' })
+            res.json({ message: 'New user joined!', userData: doc.data() });
+            // res.json({ message: 'New user' })
         }
     })
     console.log(refUserId, tgId)
