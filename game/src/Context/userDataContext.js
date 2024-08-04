@@ -40,7 +40,16 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                             if (location.pathname === "/" || location.pathname.includes('/ref')) navigate('/house')
 
 
-                        } else if (!isRefUser) {
+                        } else if (isRefUser !== false) {
+                            setUserData(userData)
+                            const getData = async () => {
+                                const docRef = await db.collection('users').doc(tgId)
+                                const doc = await docRef.get()
+                                setUserData(await doc?.data()?.length !== 0 && doc.data())
+                            }
+                            getData()
+                            navigate('/house')
+                        } else {
                             console.log('not exist')
                             const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 
@@ -56,7 +65,8 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                                 refLim: 500,
                                 petAssigned: '',
                                 foodPerTap: 1,
-                                feedToNextLevel: 3000
+                                feedToNextLevel: 3000,
+                                friends: []
 
                             }
 
