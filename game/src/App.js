@@ -23,7 +23,7 @@ function App() {
 
   console.log(process.env.NODE_ENV)
 
-  const { userData, setInitLoad, setUserData } = useUserData()
+  const { userData, setInitLoad, setUserData, setIsRefUser } = useUserData()
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
   const [refMsg, setRefMsg] = useState('')
@@ -181,7 +181,7 @@ function App() {
           console.log(data)
           setRefMsg(data.message)
           if (data.userData) {
-
+            setIsRefUser(true)
             setUserData(data.userData)
           }
         })
@@ -199,12 +199,12 @@ function App() {
 
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) &&
             <Header />}
 
           <Routes>
             <Route path="/waitlist" element={<Waitlist />} exact />
-            {[5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id) ?
+            {[5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) ?
               <>
 
                 <Route path="/" element={<Start />} />
@@ -225,7 +225,7 @@ function App() {
             }
           </Routes>
           {!['/', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) &&
             <Footer />}
         </div>
       </div>

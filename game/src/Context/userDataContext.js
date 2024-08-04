@@ -10,9 +10,10 @@ const tg = window.Telegram.WebApp
 export const UserDataProvider = ({ children, navigate, location }) => {
     const [userData, setUserData] = useState([])
     const [initLoad, setInitLoad] = useState(false)
+    const [isRefUser, setIsRefUser] = useState('')
 
     useEffect(() => {
-        if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157, 7089063746].some(id => tg.initDataUnsafe.user.id === id)) {
+        if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id)) {
 
             console.log('context', userData)
             const checkUser = () => {
@@ -39,7 +40,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                             if (location.pathname === "/" || location.pathname.includes('/ref')) navigate('/house')
 
 
-                        } else {
+                        } else if (!isRefUser) {
                             console.log('not exist')
                             const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 
@@ -78,7 +79,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
     }, [navigate])
 
     return (
-        <UserDataContext.Provider value={{ userData, setUserData, initLoad, setInitLoad }}>
+        <UserDataContext.Provider value={{ userData, setUserData, initLoad, setInitLoad, isRefUser, setIsRefUser }}>
             {children}
         </UserDataContext.Provider>
     )
