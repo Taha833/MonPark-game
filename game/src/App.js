@@ -27,6 +27,7 @@ function App() {
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
   const [refMsg, setRefMsg] = useState('')
+  const [text, setText] = useState('')
 
 
   useEffect(() => {
@@ -183,6 +184,7 @@ function App() {
           if (data.userData) {
             setIsRefUser(true)
             setUserData(data.userData)
+            setText(data.userData)
           }
         })
       }
@@ -196,7 +198,9 @@ function App() {
   return (
     <>
       <div className='bg-gradient max-h-screen h-screen overflow-x-auto'>
-
+        <span className='text-white text-xl'>
+          {text}
+        </span>
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
             !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) &&
@@ -210,7 +214,7 @@ function App() {
                 <Route path="/" element={<Start />} />
                 <Route path="/ref/:refUserId" element={<Start />} />
                 <Route path="/thankyou" element={<Thankyou />} exact />
-                <Route path="/house" element={<House server={server} refMsg={refMsg} />} exact />
+                <Route path="/house" element={<House server={server} refMsg={refMsg} setRefMsg={setRefMsg} />} exact />
                 <Route path="/shop/:section" element={<Shop server={server} />} />
                 <Route path="/kitchen" element={<Kitchen server={server} />} />
                 <Route path="/friends" element={<Friends server={server} />} />

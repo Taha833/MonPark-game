@@ -29,7 +29,7 @@ function Header() {
 
             <div className='text-3xl text-white flex mt-6 justify-between max-w-[325px] mx-auto w-full'>
                 <div>
-                    <div className='flex items-center gap-4'><img src="assets/game/pajamas_food.svg" alt="feed" width='50' />{userData.foodLeft}</div>
+                    <div className='flex items-center gap-4'><img src="/assets/game/pajamas_food.svg" alt="feed" width='50' />{userData.foodLeft}</div>
                 </div>
                 <div>
                     <div className='flex items-center gap-4'><img src="/assets/game/tabler_coin-filled.svg" alt="feed" width='50' />{userData.totalIncome}</div>
