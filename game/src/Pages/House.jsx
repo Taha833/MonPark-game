@@ -68,7 +68,7 @@ function House({ server, refMsg }) {
                 console.log(data)
                 setIncomeModal(true)
                 setIncome(data.incomeGenerated)
-                setPoop(data.totalTestPoop)
+                setPoop(data.totalPoop)
                 if (data.level) {
                     setUserData({
                         ...userData,
