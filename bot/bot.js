@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://j1m9ffd0-3000.inc1.devtunnels.ms'
+const ngrok = 'https://vsldlngk-3000.inc1.devtunnels.ms'
 
 app.use(cors({
     origin: [
@@ -315,6 +315,7 @@ const calculateFoodCost = async (tgId, foodUserWant) => {
 
 app.post('/buyFood', async (req, res) => {
     const { food, tgId, } = req.body
+    console.log(tgId)
     try {
         console.log(food)
         const result = await calculateFoodCost(tgId, food)
@@ -429,9 +430,10 @@ app.post('/ref', async (req, res) => {
 
             userRef.set({ ...newData }) // added new users
             console.log(newUserTotalIncome)
+
+
             refUserDb.update({ friends, totalIncome: refData.totalIncome + rewardOldUser }) // updated old user
-            // console.log(doc.data())
-            res.json({ message: 'New user joined!', userData: doc.data() });
+            res.json({ message: 'New user joined!', userData: newData });
             // res.json({ message: 'New user' })
         }
     })
