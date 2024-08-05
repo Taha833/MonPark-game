@@ -41,13 +41,13 @@ export const UserDataProvider = ({ children, navigate, location }) => {
 
 
                         } else if (isRefUser !== false) {
-                            setUserData(userData)
-                            const getData = async () => {
-                                const docRef = await db.collection('users').doc(tgId)
-                                const doc = await docRef.get()
-                                setUserData(await doc?.data()?.length !== 0 && doc.data())
-                            }
-                            getData()
+                            // setUserData(userData)
+                            // const getData = async () => {
+                            //     const docRef = await db.collection('users').doc(tgId)
+                            //     const doc = await docRef.get()
+                            //     setUserData(await doc?.data()?.length !== 0 && doc.data())
+                            // }
+                            // getData()
                             navigate('/house')
                         } else {
                             console.log('not exist')

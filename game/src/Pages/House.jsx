@@ -10,23 +10,23 @@ function House({ server, refMsg, setRefMsg }) {
     const [income, setIncome] = useState(0)
     const [upgrading, setUpgrading] = useState(false)
     const [poop, setPoop] = useState(0)
-    const [text, setText] = useState('')
     const userDataRef = useRef({})
 
     useEffect(() => {
         userDataRef.current = userData;
+        // toast.info(JSON.stringify(userData))
     }, [userData]);
 
     useEffect(() => {
-        if (refMsg.length !== 0) {
-            toast.info(refMsg, {
-                position: "top-right",
-                autoClose: 5000,
-                closeOnClick: true,
-                theme: "dark",
-            })
-            setRefMsg('')
-        }
+        // if (refMsg.length !== 0) {
+        //     toast.info(refMsg, {
+        //         position: "top-right",
+        //         autoClose: 5000,
+        //         closeOnClick: true,
+        //         theme: "dark",
+        //     })
+        //     setRefMsg('')
+        // }
         //eslint-disable-next-line
     }, [refMsg])
 
@@ -60,7 +60,6 @@ function House({ server, refMsg, setRefMsg }) {
 
     }
     const handleIncome = async () => {
-        setText(JSON.stringify(userData))
         await fetch(server + '/income', {
             method: "POST",
             headers: {
@@ -94,8 +93,10 @@ function House({ server, refMsg, setRefMsg }) {
         console.log('loaddata ', initLoad)
         if (initLoad) {
             console.log('income working!')
-            handleIncome()
-            setText(JSON.stringify(userData))
+            // toast.info(JSON.stringify(userData))
+            if (userData.length > 0) {
+                handleIncome()
+            }
             setInitLoad(false)
         }
         //eslint-disable-next-line
@@ -213,9 +214,6 @@ function House({ server, refMsg, setRefMsg }) {
 
         <div className={`h-full justify-between flex flex-col ${incomeModal ? 'items-center' : 'items-start'}`}>
             <ToastContainer />
-            <span className='text-white text-xl'>
-                {text}
-            </span>
             {!incomeModal &&
                 <>
                     <div className='max-w-[325px] mx-auto mt-8 w-full relative'>

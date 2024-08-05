@@ -12,6 +12,10 @@ import Shop from './Pages/Shop';
 import Kitchen from './Pages/Kitchen';
 import Friends from './Pages/Friends';
 import Earn from './Pages/Earn';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
+
 const tg = window.Telegram.WebApp
 
 // change development to production
@@ -27,7 +31,6 @@ function App() {
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
   const [refMsg, setRefMsg] = useState('')
-  const [text, setText] = useState('')
 
 
   useEffect(() => {
@@ -56,6 +59,7 @@ function App() {
   useEffect(() => {
     userDataRef.current = userData
     console.log('userData ', userData)
+    toast.info(JSON.stringify(userData))
   }, [userData])
 
   // Telegram Events setup 👇
@@ -179,14 +183,14 @@ function App() {
             },
             body: JSON.stringify({ refUserId: refUserId, tgId })
           }).then(res => res.json()).then(data => {
-  
-            console.log(data)
-            setRefMsg(data.message)
+
+            setRefMsg(JSON.stringify(data.userData))
+            setIsRefUser(true)
+            setUserData(data.userData)
+            // toast.info(JSON.stringify(data.userData))
             if (data.userData) {
-              setIsRefUser(true)
-              setUserData(data.userData)
-              setText(data.userData)
             }
+
           }).catch(err => console.log(err))
         }
         getData()
@@ -201,9 +205,7 @@ function App() {
   return (
     <>
       <div className='bg-gradient max-h-screen h-screen overflow-x-auto'>
-        <span className='text-white text-xl'>
-          {text}
-        </span>
+        <ToastContainer />
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
             !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) &&
