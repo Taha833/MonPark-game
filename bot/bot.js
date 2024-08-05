@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://vsldlngk-3000.inc1.devtunnels.ms'
+const ngrok = 'https://j1m9ffd0-3000.inc1.devtunnels.ms'
 
 app.use(cors({
     origin: [

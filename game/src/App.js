@@ -171,22 +171,25 @@ function App() {
         const refUserId = startParam.split('_')[1]
         console.log(refUserId)
 
-        fetch(server + '/ref', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ refUserId: refUserId, tgId })
-        }).then(res => res.json()).then(data => {
-
-          console.log(data)
-          setRefMsg(data.message)
-          if (data.userData) {
-            setIsRefUser(true)
-            setUserData(data.userData)
-            setText(data.userData)
-          }
-        })
+        const getData = async () => {
+          await fetch(server + '/ref', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ refUserId: refUserId, tgId })
+          }).then(res => res.json()).then(data => {
+  
+            console.log(data)
+            setRefMsg(data.message)
+            if (data.userData) {
+              setIsRefUser(true)
+              setUserData(data.userData)
+              setText(data.userData)
+            }
+          }).catch(err => console.log(err))
+        }
+        getData()
       }
     }
 
