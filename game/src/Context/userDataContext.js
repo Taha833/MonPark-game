@@ -10,7 +10,7 @@ const tg = window.Telegram.WebApp
 export const UserDataProvider = ({ children, navigate, location }) => {
     const [userData, setUserData] = useState([])
     const [initLoad, setInitLoad] = useState(false)
-    const [isRefUser, setIsRefUser] = useState('')
+    const [isRefUser, setIsRefUser] = useState(false)
 
     useEffect(() => {
         if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id)) {
@@ -27,7 +27,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                     const docRef = db.collection('users').doc(tgId)
                     const doc = await docRef.get()
                     if (doc.exists) {
-                        setUserData(userData?.length === 0 ? doc.data() : userData)
+                        setUserData(userData.length === 0 ? doc.data() : userData)
                         console.log('data', doc.data())
                     }
                     return doc.exists
@@ -41,15 +41,10 @@ export const UserDataProvider = ({ children, navigate, location }) => {
 
 
                         } else if (isRefUser !== false) {
-                            // setUserData(userData)
-                            // const getData = async () => {
-                            //     const docRef = await db.collection('users').doc(tgId)
-                            //     const doc = await docRef.get()
-                            //     setUserData(await doc?.data()?.length !== 0 && doc.data())
-                            // }
-                            // getData()
+                            // alert('ref user false')
                             navigate('/house')
                         } else {
+
                             console.log('not exist')
                             const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 
