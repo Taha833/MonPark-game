@@ -395,7 +395,7 @@ app.post('/ref', async (req, res) => {
     userRef.get().then(doc => {
         if (doc.exists) { // new user already exists, no need to reward
             console.log('user exists ', doc.data())
-            return res.json({ message: 'user already exists' })
+            return res.json({ message: 'user already exists', userData: doc.data() })
         } else {
             console.log('added new friend')
             const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
