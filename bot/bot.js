@@ -404,7 +404,7 @@ app.post('/ref', async (req, res) => {
             const newUserTotalIncome = 2000 + rewardNewUser
 
             const newData = {
-                tgId,
+                tgId: String(tgId),
                 lastActive: timestamp,
                 totalIncome: newUserTotalIncome,
                 incomePerHour: 0,
