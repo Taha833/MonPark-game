@@ -18,15 +18,15 @@ function House({ server, refMsg, setRefMsg }) {
     }, [userData]);
 
     useEffect(() => {
-        // if (refMsg.length !== 0) {
-        //     toast.info(refMsg, {
-        //         position: "top-right",
-        //         autoClose: 5000,
-        //         closeOnClick: true,
-        //         theme: "dark",
-        //     })
-        //     setRefMsg('')
-        // }
+        if (refMsg.length !== 0) {
+            toast.info(refMsg, {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                theme: "dark",
+            })
+            setRefMsg('')
+        }
         //eslint-disable-next-line
     }, [refMsg])
 

@@ -11,7 +11,6 @@ function Kitchen({ server }) {
     const [booster, setBooster] = useState(null)
 
     useEffect(() => {
-        toast.info(JSON.stringify(userData))
         fetch(server + '/foodPrice/' + userData.tgId).then(res => res.json()).then(data => {
             setFoodArr(data.foodPrice)
             console.log(data)

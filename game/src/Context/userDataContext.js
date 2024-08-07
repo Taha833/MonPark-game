@@ -27,7 +27,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                     const docRef = db.collection('users').doc(tgId)
                     const doc = await docRef.get()
                     if (doc.exists) {
-                        setUserData(userData.length === 0 ? doc.data() : userData)
+                        setUserData(userData?.length === 0 ? doc.data() : userData)
                         console.log('data', doc.data())
                     }
                     return doc.exists
