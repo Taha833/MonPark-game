@@ -46,7 +46,6 @@ export const UserDataProvider = ({ children, navigate, location }) => {
 
                             navigate('/house')
                         } else if (isRefUser === false) {
-                            alert('new user create')
 
                             console.log('not exist')
                             const timestamp = firebase.firestore.FieldValue.serverTimestamp()
