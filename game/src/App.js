@@ -188,6 +188,8 @@ function App() {
           }).catch(err => console.log(err))
         }
         getData()
+      } else {
+        setIsRefUser(false)
       }
     }
 

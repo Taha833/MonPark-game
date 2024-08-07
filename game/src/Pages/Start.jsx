@@ -11,9 +11,9 @@ function Start() {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        if (userData.length !== 0) {
+        if (Object.keys(userData).length !== 0) {
             console.log(refUserId)
-
+            // alert(Object.keys(userData).length)
 
             setIsLoading(false)
         }

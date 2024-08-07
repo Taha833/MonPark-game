@@ -10,7 +10,7 @@ const tg = window.Telegram.WebApp
 export const UserDataProvider = ({ children, navigate, location }) => {
     const [userData, setUserData] = useState([])
     const [initLoad, setInitLoad] = useState(false)
-    const [isRefUser, setIsRefUser] = useState(false)
+    const [isRefUser, setIsRefUser] = useState(null)
 
     useEffect(() => {
         if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id)) {
@@ -35,15 +35,18 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                 checkDoc()
                     .then(exists => {
                         if (exists) {
+                            // alert('exists')
                             setReturningUser() // set user to localStorage
                             console.log('exists', exists)
                             if (location.pathname === "/" || location.pathname.includes('/ref')) navigate('/house')
 
 
-                        } else if (isRefUser !== false) {
-                            // alert('ref user false')
+                        } else if (isRefUser === true) {
+                            // alert('not exists')
+
                             navigate('/house')
-                        } else {
+                        } else if (isRefUser === false) {
+                            alert('new user create')
 
                             console.log('not exist')
                             const timestamp = firebase.firestore.FieldValue.serverTimestamp()
@@ -81,7 +84,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
             checkUser()
         }
         // eslint-disable-next-line
-    }, [navigate])
+    }, [navigate, isRefUser])
 
     return (
         <UserDataContext.Provider value={{ userData, setUserData, initLoad, setInitLoad, isRefUser, setIsRefUser }}>
