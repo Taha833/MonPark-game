@@ -67,6 +67,7 @@ function House({ server, refMsg, setRefMsg }) {
             },
             body: JSON.stringify({ userData })
         }).then(res => res.json()).then(data => {
+            console.log('income gen!')
             if (data.incomeGenerated > 0) {
                 console.log(data)
                 setIncomeModal(true)
@@ -86,15 +87,14 @@ function House({ server, refMsg, setRefMsg }) {
                     })
                 }
             }
-        })
+        }).catch(err => console.log(JSON.stringify(err) + JSON.stringify(userData)))
     }
 
     useEffect(() => {
         console.log('loaddata ', initLoad)
         if (initLoad) {
             console.log('income working!')
-            // toast.info(JSON.stringify(userData))
-            if (userData.length > 0) {
+            if (userData.incomePerHour > 0) {
                 handleIncome()
             }
             setInitLoad(false)
