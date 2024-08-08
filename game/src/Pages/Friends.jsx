@@ -91,7 +91,7 @@ function Friends({ server }) {
                     Copy Text
                 </button>
                 <p className='text-white text-center mt-4'>
-                    Referal gives your friend 100 coins and 60 to you.
+                    Referal gives your friend 50 coins and 250 coins to you.
                 </p>
 
             </div>
