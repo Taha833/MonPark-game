@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
-
+import "firebase/compat/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyAL8rZLxhIo3JxiKTdIZWsFfckvH1GU2_Q",
   authDomain: "monpark-16c40.firebaseapp.com",
@@ -14,5 +14,7 @@ const firebaseConfig = {
 //eslint-disable-next-line
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore()
+const storage = firebase.storage()
 
 export default db
+export { storage }

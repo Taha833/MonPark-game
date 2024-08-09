@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react'
 import { setReturningUser } from '../Utils'
 import db from '../firebase'
 import firebase from 'firebase/compat/app';
+import useImg from '../Hooks/useImg';
 
 const UserDataContext = createContext()
 const tg = window.Telegram.WebApp
@@ -11,6 +12,7 @@ export const UserDataProvider = ({ children, navigate, location }) => {
     const [userData, setUserData] = useState([])
     const [initLoad, setInitLoad] = useState(false)
     const [isRefUser, setIsRefUser] = useState(null)
+    const { getImgUrl } = useImg()
 
     useEffect(() => {
         if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id)) {
@@ -29,6 +31,13 @@ export const UserDataProvider = ({ children, navigate, location }) => {
                     if (doc.exists) {
                         setUserData(userData.length === 0 ? doc.data() : userData)
                         console.log('data', doc.data())
+
+                        const petAssigned = doc.data().petAssigned
+
+                        if (petAssigned !== "") {
+                            getImgUrl(`${petAssigned}.png`)
+                        }
+
                     }
                     return doc.exists
                 }

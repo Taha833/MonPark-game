@@ -12,6 +12,7 @@ import Shop from './Pages/Shop';
 import Kitchen from './Pages/Kitchen';
 import Friends from './Pages/Friends';
 import Earn from './Pages/Earn';
+import useImg from './Hooks/useImg';
 
 
 const tg = window.Telegram.WebApp
@@ -29,7 +30,7 @@ function App() {
   const userDataRef = useRef(userData)
   const hasBackgroundEventTriggeredRef = useRef(false);
   const [refMsg, setRefMsg] = useState('')
-
+  const { getImgUrl } = useImg()
 
   useEffect(() => {
     console.log('app load')
@@ -184,6 +185,10 @@ function App() {
             setRefMsg(data.message)
             setIsRefUser(true)
             setUserData(data.userData)
+            const petAssigned = data.userData.petAssigned
+            if (petAssigned !== "") {
+              getImgUrl(`${petAssigned}.png`)
+            }
 
           }).catch(err => console.log(err))
         }

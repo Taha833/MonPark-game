@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom'
 import UserProviderWrapper from './UserProviderWrapper';
+import { ImageProvider } from './Context/imgProvider';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -33,9 +34,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <Router>
-    <UserProviderWrapper>
-      <App />
-    </UserProviderWrapper>
+    <ImageProvider>
+      <UserProviderWrapper>
+
+        <App />
+      </UserProviderWrapper>
+    </ImageProvider>
   </Router>
   // </React.StrictMode>
 );
