@@ -134,7 +134,7 @@ function Kitchen({ server }) {
                     <div className='flex flex-col mt-3 gap-2 max-w-[325px]'>
                         <div className='flex flex-col w-full gap-2 text-white'>
                             <div className='flex flex-col'>
-                                <label for="food">Food</label>
+                                <label htmlFor="food">Food</label>
                                 <input type='number' min="1" placeholder='enter food amount' className='rounded-md p-2 bg-[#50347A] text-white flex-1' id="food" value={foodAmt} onChange={(e) => {
                                     if (Number(e.target.value) < 0) {
                                         setFoodAmt(1);

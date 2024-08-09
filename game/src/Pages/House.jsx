@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import useUserData from '../Hooks/useUserData';
+import useImg from '../Hooks/useImg';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from 'react-router-dom';
-function House({ server, refMsg, setRefMsg }) {
 
+function House({ server, refMsg, setRefMsg }) {
+    const { img } = useImg()
     const { userData, setUserData, initLoad, setInitLoad } = useUserData()
     const [incomeModal, setIncomeModal] = useState(false)
     const [income, setIncome] = useState(0)
@@ -70,7 +72,7 @@ function House({ server, refMsg, setRefMsg }) {
             console.log('income gen!')
             if (data.incomeGenerated > 0) {
                 console.log(data)
-                setIncomeModal(true)
+                // setIncomeModal(true)
                 setIncome(data.incomeGenerated)
                 setPoop(data.totalPoop)
                 if (data.level) {
@@ -234,7 +236,22 @@ function House({ server, refMsg, setRefMsg }) {
                     </div>
                     <div className='mx-auto flex justify-center transition-transform duration-200' id="egg">
                         {userData.level === 0 ? <img src="/assets/game/egg.svg" alt="egg" /> :
-                            <img src={poop === 0 ? `/assets/game/pets/${userData.petAssigned}.svg` : `/assets/game/pets/messy/${userData.petAssigned}.png`} alt="creature" id="creature" width="250px" />
+                            <img src={poop === 0 ? `${img.normal}` : `${img.messy}`} alt="creature" id="creature" width="250px"
+                                loading='lazy'
+                                style={{
+                                    filter: 'blur(10px)',
+                                    transition: 'filter 1s',
+                                }}
+                                onError={(e) => {
+                                    e.target.onerror = '';
+                                    e.target.src = '/assets/game/egg.svg';
+                                }}
+                                onLoad={(e) => {
+                                    if (e.target.src === img.normal || e.target.src === img.messy) {
+                                        e.target.style.filter = ''
+                                    }
+                                }}
+                            />
                         }
                     </div>
 
