@@ -72,7 +72,7 @@ function House({ server, refMsg, setRefMsg }) {
             console.log('income gen!')
             if (data.incomeGenerated > 0) {
                 console.log(data)
-                // setIncomeModal(true)
+                setIncomeModal(true)
                 setIncome(data.incomeGenerated)
                 setPoop(data.totalPoop)
                 if (data.level) {
