@@ -184,7 +184,8 @@ app.post('/buy', async (req, res) => {
                 upgCost,
                 upgIncome,
                 baseCost: item.baseCost,
-                baseRev: item.baseRev
+                baseRev: item.baseRev,
+                photoURL: item.photoURL
             })
         } else {
             userShop[itemIndex] = {
@@ -243,10 +244,6 @@ app.post('/income', async (req, res) => {
             const diffSeconds = Math.floor(diff / 1000) // seconds
             const incomeGenerated = Math.floor((incomePerHour / 3600) * diffSeconds)
 
-            console.log(diffSeconds);
-            console.log(incomePerHour)
-            console.log(incomePerHour / 3600)
-            console.log(incomeGenerated)
             // x income -> 60 min
             // 60 min -> 3600 seconds
             // 3600 seconds -> x income
@@ -258,11 +255,6 @@ app.post('/income', async (req, res) => {
                 const poopPerHour = 1
                 const totalPoop = Math.floor(diffSeconds / 3600) * poopPerHour
                 const totalTestPoop = Math.floor(diffSeconds) * poopPerHour
-
-                // for frontend
-                // check if poop > 0 
-                // show messy pet
-                // on tap events -> check if poop > 0 -> on click - remove the messy part
 
                 const totalIncomeDb = userRef.data().totalIncome + incomeGenerated
 

@@ -4,7 +4,6 @@ import React from 'react'
 function ShopItems({ item, setSelectedItem, setSelected, userData }) {
 
     const lock = userData.level < item.unlockAge ? true : false
-
     return (
         <div className="relative bg-[#321B55] rounded-xl text-gray-400 flex flex-col gap-2 cursor-pointer max-w-[150px]" onClick={() => {
             if (!lock) {
@@ -14,7 +13,7 @@ function ShopItems({ item, setSelectedItem, setSelected, userData }) {
 
         }}>
             <div className="flex gap-4 items-start p-2 flex-1">
-                <img src="/assets/game/product.svg" alt="TPS" width="40px" />
+                <img src={item.photoURL || '/assets/game/product.svg'} alt="TPS" width="40px" />
                 <div>
                     <h3 className="text-white text-[14px]">{item.name}</h3>
                     <span className="text-[12px]">profit per hour</span>
