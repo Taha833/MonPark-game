@@ -156,7 +156,7 @@ function House({ server, refMsg, setRefMsg }) {
         }
         if ((!incomeModal && egg) || (!incomeModal && creature)) {
             console.log('event init')
-
+            alert('event init')
             egg.addEventListener('touchstart', handleTouch)
 
             egg.addEventListener('touchend', e => {
