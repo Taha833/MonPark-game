@@ -74,7 +74,11 @@ function House({ server, refMsg, setRefMsg }) {
                 console.log(data)
                 setIncomeModal(true)
                 setIncome(data.incomeGenerated)
-                setPoop(data.totalPoop)
+                if (data.level > 0) {
+                    setPoop(data.totalPoop)
+                } else {
+                    setPoop(0)
+                }
                 if (data.level) {
                     setUserData({
                         ...userData,
@@ -142,7 +146,6 @@ function House({ server, refMsg, setRefMsg }) {
             console.log("targets", e.targetTouches.length)
             console.log("changed", e.changedTouches.length)
             if (poop === 0) {
-
                 handleDataChange()
             }
             if (poop > 0) {
@@ -156,7 +159,6 @@ function House({ server, refMsg, setRefMsg }) {
         }
         if ((!incomeModal && egg) || (!incomeModal && creature)) {
             console.log('event init')
-            alert('event init')
             egg.addEventListener('touchstart', handleTouch)
 
             egg.addEventListener('touchend', e => {

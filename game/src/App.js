@@ -114,7 +114,7 @@ function App() {
 
 
     const handleBeforeUnload = (event, type) => {
-      event.preventDefault();
+      // event.preventDefault();
       // event.returnValue = ''; // Required for Chrome
       if (window.location.pathname !== "/waitlist") {
         if (navigator && navigator.serviceWorker && navigator.serviceWorker.controller) {
