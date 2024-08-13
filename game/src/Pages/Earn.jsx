@@ -1,41 +1,93 @@
 import React, { useEffect, useState } from 'react'
 import useUserData from '../Hooks/useUserData'
+import { toast, ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
-function Earn({server}) {
-    const { userData } = useUserData()
+
+function Earn({ server }) {
+    const { userData, setUserData } = useUserData()
     const [twitterFollow, setTwitterFollow] = useState(null)
+    const [telegramFollow, setTelegramFollow] = useState(null)
+    const [tweetTask, setTweetTask] = useState(null)
+
     useEffect(() => {
-        if (userData && userData.twtFollow) {
+        if (userData?.twtFollow) {
             setTwitterFollow(userData.twtFollow)
-            } else {
-                setTwitterFollow(false)
-            }
-    }, [])
+        } else {
+            setTwitterFollow(false)
+        }
+
+
+    }, [userData.twtFollow])
+
+    useEffect(() => {
+        console.log(userData.tgFollow)
+        if (userData?.tgFollow) {
+            setTelegramFollow(userData.tgFollow)
+        } else {
+            setTelegramFollow(false)
+        }
+    }, [userData.tgFollow])
 
     useEffect(() => {
         console.log(twitterFollow)
     }, [twitterFollow])
 
-    const twtFollow = () => {
-        if (twitterFollow === false || userData.twtFollow) {
-            console.log('followed')
-            fetch(server + '/follow/twitter', {
+
+    const socialConfig = {
+        twitter: {
+            socialKey: 'twtFollow',
+            socialState: twitterFollow,
+            setSocialState: setTwitterFollow
+        },
+        telegram: {
+            socialKey: 'tgFollow',
+            socialState: telegramFollow,
+            setSocialState: setTelegramFollow
+        },
+        tweetTask: {
+            socialKey: 'twtTask',
+            socialState: tweetTask,
+            setSocialState: setTweetTask
+        }
+    }
+
+
+    const handleSocialTask = (social) => {
+
+        const { socialKey, socialState, setSocialState } = socialConfig[social]
+
+        if (socialState === false || !userData[socialKey]) {
+            fetch(`${server}/follow/${social}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body:JSON.stringify({tgId:userData.tgId})
-            }).then(res => res.json()).then(data => console.log(data))
-            setTwitterFollow(true)
+                body: JSON.stringify({ tgId: userData.tgId })
+            }).then(res => res.json())
+                .then(data => {
+                    setUserData(prev => ({
+                        ...prev,
+                        [socialKey]: data[socialKey],
+                        totalIncome: data.totalIncome
+                    }))
+                    setSocialState(true)
+                    toast.success('You got 15 coins!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        closeOnClick: true,
+                        theme: "dark",
+                    })
+                })
         }
     }
- 
 
     // Store social tasks in state 
     // check if task !== true (get from db if already has) -> update db & give reward
     // else ask user to complete task
     return (
         <div className='text-white h-full flex flex-col items-center w-full'>
+            <ToastContainer />
             <div className='max-w-[325px] w-full my-3'>
 
                 <h2 className='text-2xl text-center mb-3'>Earn More!</h2>
@@ -69,7 +121,7 @@ function Earn({server}) {
                                         </div>
                                     </div>
                                 </div>
-                                <div onClick={twtFollow}>Check</div>
+                                {twitterFollow === false || !userData.twtFollow ? <div onClick={() => handleSocialTask('twitter')}>Check</div> : '✅'}
                             </div>
 
                             <div className="flex flex-col gap-2">
@@ -88,7 +140,8 @@ function Earn({server}) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div>Check</div>
+                                    {telegramFollow === false || !userData.tgFollow ? <div onClick={() => handleSocialTask('telegram')}>Check</div> : '✅'}
+
 
                                 </div>
                             </div>
@@ -109,7 +162,7 @@ function Earn({server}) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div>Check</div>
+                                    {tweetTask === false || !userData.twtTask ? <div onClick={() => handleSocialTask('tweetTask')}>Check</div> : '✅'}
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">

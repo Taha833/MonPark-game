@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://4862-2409-40d1-c-d477-7924-1195-67eb-9e93.ngrok-free.app'
+const ngrok = 'https://7629-38-137-59-249.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -433,25 +433,31 @@ app.post('/ref', async (req, res) => {
 })
 
 app.post('/follow/:social', async (req, res) => {
-    const {social} = req.params
-    const {tgId} = req.body
+    const { social } = req.params
+    const { tgId } = req.body
     const userRef = await db.collection('users').doc(tgId)
     const userDoc = await userRef.get()
-    
+
 
     try {
-        if(social === "twitter"){
-            
-        } else if (social === "telegram"){
-    
+        if (social === "twitter" && userDoc.twtFollow !== true) {
+            userRef.update({ twtFollow: true, totalIncome: userDoc.data().totalIncome + 10 })
+            res.json({ social, twtFollow: true, totalIncome: userDoc.data().totalIncome + 10 })
+        } else if (social === "telegram" && userDoc.tgFollow !== true) {
+            userRef.update({ tgFollow: true, totalIncome: userDoc.data().totalIncome + 10 })
+            res.json({ social, tgFollow: true, totalIncome: userDoc.data().totalIncome + 10 })
+        } else if (social === "tweetTask" && userDoc.twtTask !== true) {
+            userRef.update({ twtTask: true, totalIncome: userDoc.data().totalIncome + 10 })
+            res.json({ social, twtTask: true, totalIncome: userDoc.data().totalIncome + 10 })
+        } else {
+            res.status(500).send('invalid')
         }
-    } catch(err){
+    } catch (err) {
         console.log(err)
         res.status(500).json(err)
     }
-   
 
-    res.json({social, userDoc})
+
 })
 
 
