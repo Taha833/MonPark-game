@@ -223,7 +223,7 @@ function App() {
                 <Route path="/shop/:section" element={<Shop server={server} />} />
                 <Route path="/kitchen" element={<Kitchen server={server} />} />
                 <Route path="/friends" element={<Friends server={server} />} />
-                <Route path="/earn" element={<Earn />} />
+                <Route path="/earn" element={<Earn server={server}/>} />
               </>
               :
               <Route path="/" element={

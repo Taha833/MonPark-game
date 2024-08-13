@@ -1,6 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import useUserData from '../Hooks/useUserData'
 
-function Earn() {
+function Earn({server}) {
+    const { userData } = useUserData()
+    const [twitterFollow, setTwitterFollow] = useState(null)
+    useEffect(() => {
+        if (userData && userData.twtFollow) {
+            setTwitterFollow(userData.twtFollow)
+            } else {
+                setTwitterFollow(false)
+            }
+    }, [])
+
+    useEffect(() => {
+        console.log(twitterFollow)
+    }, [twitterFollow])
+
+    const twtFollow = () => {
+        if (twitterFollow === false || userData.twtFollow) {
+            console.log('followed')
+            fetch(server + '/follow/twitter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body:JSON.stringify({tgId:userData.tgId})
+            }).then(res => res.json()).then(data => console.log(data))
+            setTwitterFollow(true)
+        }
+    }
+ 
+
+    // Store social tasks in state 
+    // check if task !== true (get from db if already has) -> update db & give reward
+    // else ask user to complete task
     return (
         <div className='text-white h-full flex flex-col items-center w-full'>
             <div className='max-w-[325px] w-full my-3'>
@@ -36,7 +69,7 @@ function Earn() {
                                         </div>
                                     </div>
                                 </div>
-                                <div>Check</div>
+                                <div onClick={twtFollow}>Check</div>
                             </div>
 
                             <div className="flex flex-col gap-2">

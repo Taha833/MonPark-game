@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://vsldlngk-3000.inc1.devtunnels.ms'
+const ngrok = 'https://4862-2409-40d1-c-d477-7924-1195-67eb-9e93.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -431,6 +431,29 @@ app.post('/ref', async (req, res) => {
     })
     console.log(refUserId, tgId)
 })
+
+app.post('/follow/:social', async (req, res) => {
+    const {social} = req.params
+    const {tgId} = req.body
+    const userRef = await db.collection('users').doc(tgId)
+    const userDoc = await userRef.get()
+    
+
+    try {
+        if(social === "twitter"){
+            
+        } else if (social === "telegram"){
+    
+        }
+    } catch(err){
+        console.log(err)
+        res.status(500).json(err)
+    }
+   
+
+    res.json({social, userDoc})
+})
+
 
 app.get('/', (req, res) => {
     res.send('Hello from my Express server!');
