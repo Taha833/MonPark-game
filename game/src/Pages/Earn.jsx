@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useUserData from '../Hooks/useUserData'
 import { toast, ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function Earn({ server }) {
     const { userData, setUserData } = useUserData()
@@ -12,7 +12,7 @@ function Earn({ server }) {
     const [friendsTask, setFriendsTask] = useState(null)
 
     useEffect(() => {
-        if(userData?.friendsTask) {
+        if (userData?.friendsTask) {
             setFriendsTask(userData.friendsTask)
         } else {
             setFriendsTask(false)
@@ -92,7 +92,7 @@ function Earn({ server }) {
     }
 
     const handleFriendsReward = async () => {
-        if(userData['friends'].length < 2) {
+        if (userData['friends'].length < 2) {
             toast.error('Invalid', {
                 position: "top-right",
                 autoClose: 5000,
@@ -103,21 +103,21 @@ function Earn({ server }) {
             return;
         }
 
-        if(friendsTask === false || userData['friendsTask']){
-           const response = await fetch(`${server}/earn/friends`, {
-                method:'POST',
+        if (friendsTask === false || userData['friendsTask']) {
+            const response = await fetch(`${server}/earn/friends`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ tgId: userData.tgId })
             })
             const data = await response.json()
-            if(response.ok){
+            if (response.ok) {
                 console.log(data)
                 setUserData(prev => ({
                     ...prev,
                     friendsTask: data.friendsTask,
-                    totalIncome:data.totalIncome
+                    totalIncome: data.totalIncome
                 }))
                 setFriendsTask(true)
                 toast.success('You got 15 coins!', {
@@ -171,7 +171,7 @@ function Earn({ server }) {
                                         <div className='flex gap-1 items-center'>
                                             <img src="/assets/game/tabler_coin-filled.svg" alt="coin" width="20px" />
 
-                                            <span>+15</span>
+                                            <span>+150</span>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@ function Earn({ server }) {
                                             <div className='flex gap-1 items-center'>
                                                 <img src="/assets/game/tabler_coin-filled.svg" alt="coin" width="20px" />
 
-                                                <span>+15</span>
+                                                <span>+200</span>
                                             </div>
                                         </div>
                                     </div>
@@ -212,7 +212,7 @@ function Earn({ server }) {
                                             <div className='flex gap-1 items-center'>
                                                 <img src="/assets/game/tabler_coin-filled.svg" alt="coin" width="20px" />
 
-                                                <span>+15</span>
+                                                <span>+250</span>
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@ function Earn({ server }) {
                                             <div className='flex gap-1 items-center'>
                                                 <img src="/assets/game/tabler_coin-filled.svg" alt="coin" width="20px" />
 
-                                                <span>+15</span>
+                                                <span>+300</span>
                                             </div>
                                         </div>
                                     </Link>
