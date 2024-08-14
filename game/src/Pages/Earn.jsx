@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react'
 import useUserData from '../Hooks/useUserData'
 import { toast, ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
-
+import {Link} from 'react-router-dom'
 
 function Earn({ server }) {
     const { userData, setUserData } = useUserData()
     const [twitterFollow, setTwitterFollow] = useState(null)
     const [telegramFollow, setTelegramFollow] = useState(null)
     const [tweetTask, setTweetTask] = useState(null)
+    const [friendsTask, setFriendsTask] = useState(null)
+
+    useEffect(() => {
+        if(userData?.friendsTask) {
+            setFriendsTask(userData.friendsTask)
+        } else {
+            setFriendsTask(false)
+        }
+    }, [userData.friendsTask])
 
     useEffect(() => {
         if (userData?.twtFollow) {
@@ -82,9 +91,54 @@ function Earn({ server }) {
         }
     }
 
-    // Store social tasks in state 
-    // check if task !== true (get from db if already has) -> update db & give reward
-    // else ask user to complete task
+    const handleFriendsReward = async () => {
+        if(userData['friends'].length < 2) {
+            toast.error('Invalid', {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                theme: "dark",
+            })
+
+            return;
+        }
+
+        if(friendsTask === false || userData['friendsTask']){
+           const response = await fetch(`${server}/earn/friends`, {
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tgId: userData.tgId })
+            })
+            const data = await response.json()
+            if(response.ok){
+                console.log(data)
+                setUserData(prev => ({
+                    ...prev,
+                    friendsTask: data.friendsTask,
+                    totalIncome:data.totalIncome
+                }))
+                setFriendsTask(true)
+                toast.success('You got 15 coins!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    closeOnClick: true,
+                    theme: "dark",
+                })
+            } else {
+                console.log(data.error)
+                toast.error(data.error, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    closeOnClick: true,
+                    theme: "dark",
+                })
+            }
+        }
+    }
+
+
     return (
         <div className='text-white h-full flex flex-col items-center w-full'>
             <ToastContainer />
@@ -167,10 +221,7 @@ function Earn({ server }) {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div className='bg-[#321B55] rounded-lg px-2 py-2 flex gap-2 items-center justify-between'>
-                                    <div className='flex gap-2 w-full' onClick={() => {
-
-                                        window.Telegram.WebApp.openLink('https://twitter.com/intent/tweet?text=Your%20message%20here')
-                                    }}>
+                                    <Link className='flex gap-2 w-full' to="/friends">
                                         <img src="#" alt="" />
                                         <div className='flex-col'>
 
@@ -181,8 +232,9 @@ function Earn({ server }) {
                                                 <span>+15</span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>Check</div>
+                                    </Link>
+                                    {friendsTask === false || !userData.friendsTask ? <div onClick={handleFriendsReward}>Check</div> : '✅'}
+
                                 </div>
                             </div>
 

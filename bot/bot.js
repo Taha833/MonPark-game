@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://7629-38-137-59-249.ngrok-free.app'
+const ngrok = 'https://77b4-2409-40d1-8e-4e37-39fb-4b7-7af7-def8.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -460,6 +460,24 @@ app.post('/follow/:social', async (req, res) => {
 
 })
 
+app.post('/earn/friends', async (req, res) => {
+    const { tgId } = req.body
+    const userRef = await db.collection('users').doc(tgId)
+    const userDoc = await userRef.get()
+    try{
+        const noOfriends = userDoc.data()['friends'].length
+        if(userDoc.friendsTask !== true && noOfriends >= 2 ){
+            userRef.update({ friendsTask: true, totalIncome: userDoc.data().totalIncome + 10})
+            res.json({ friendsTask: true, totalIncome: userDoc.data().totalIncome + 10})
+        } else {
+            res.status(400).json({error:'invalid'})
+        }
+    }  catch(err){
+        console.log(err)
+        res.status(500).json(err)
+    }
+    
+})
 
 app.get('/', (req, res) => {
     res.send('Hello from my Express server!');
