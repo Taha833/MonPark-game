@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://c6f0-38-137-59-249.ngrok-free.app'
+const ngrok = 'https://a3a9-38-137-59-249.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -477,6 +477,60 @@ app.post('/earn/friends', async (req, res) => {
         res.status(500).json(err)
     }
 
+})
+
+app.post('/daily-reward', async (req, res) => {
+    const { tgId } = req.body
+    const rewardsArr = [100, 200, 300, 400, 500, 600, 700]
+
+    try {
+        const userRef = db.collection('users').doc(tgId)
+        const userDoc = await userRef.get()
+        const userData = await userDoc.data()
+
+        let lastClaimed;
+        if (userData.rewardlastClaimed) {
+            lastClaimed = userData.rewardlastClaimed.toDate();
+        } else {
+            // const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
+
+            lastClaimed = new Date();
+            lastClaimed.setDate(lastClaimed.getDate() - 1)
+        }
+
+        const now = new Date()
+        const daysSinceLastClaim = Math.floor((now - lastClaimed) / (1000 * 60 * 60 * 24))
+
+        if (daysSinceLastClaim < 1) {
+            return res.status(400).json({ error: 'Reward already claimed!' })
+        }
+
+        let currentDayInCycle = userData.currentDayInCycle !== undefined ? userData.currentDayInCycle : 0
+
+
+
+        let newDayInCycle = (currentDayInCycle + daysSinceLastClaim) % rewardsArr.length;
+        const reward = rewardsArr[newDayInCycle - 1];
+        const timestamp = firebase.default.firestore.FieldValue.serverTimestamp()
+
+
+        await userRef.update({
+            rewardLastClaimed: timestamp,
+            currentDayInCycle: newDayInCycle,
+            totalIncome: userData.totalIncome + reward
+        })
+
+        return res.json({
+            totalIncome: userData.totalIncome + reward,
+            rewardLastClaimed: timestamp,
+            currentDayInCycle: newDayInCycle,
+            reward
+        })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
 })
 
 app.get('/', (req, res) => {

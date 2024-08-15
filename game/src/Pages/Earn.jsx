@@ -10,6 +10,21 @@ function Earn({ server }) {
     const [telegramFollow, setTelegramFollow] = useState(null)
     const [tweetTask, setTweetTask] = useState(null)
     const [friendsTask, setFriendsTask] = useState(null)
+    const [dailyReward, setDailyReward] = useState(null)
+    const rewardArr = [100, 200, 300, 400, 500, 600, 700]
+    const [nextReward, setNextReward] = useState(null)
+
+    useEffect(() => {
+        const now = new Date()
+        if (userData?.rewardLastClaimed || userData.rewardLastClaimed < now) {
+            setDailyReward(true)
+            setNextReward(rewardArr[userData.currentDayInCycle])
+        } else {
+            console.log('not present')
+            setDailyReward(false)
+        }
+        //eslint-disable-next-line
+    }, [userData.rewardLastClaimed])
 
     useEffect(() => {
         if (userData?.friendsTask) {
@@ -138,6 +153,46 @@ function Earn({ server }) {
         }
     }
 
+    const handleDailyReward = async () => {
+        if (dailyReward === true) {
+            return
+        }
+        const response = await fetch(`${server}/daily-reward`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ tgId: userData.tgId })
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+            setDailyReward(true)
+            const { totalIncome, rewardLastClaimed, currentDayInCyle, reward } = data
+
+            setUserData(prev => ({
+                ...prev,
+                totalIncome,
+                rewardLastClaimed,
+                currentDayInCyle
+
+            }))
+            toast.success(`You got ${reward} coins!`, {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                theme: "dark",
+            })
+        } else {
+            toast.error(data.error, {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+                theme: "dark",
+            })
+        }
+    }
 
     return (
         <div className='text-white h-full flex flex-col items-center w-full'>
@@ -146,14 +201,14 @@ function Earn({ server }) {
 
                 <h2 className='text-2xl text-center mb-3'>Earn More!</h2>
                 <div className='flex flex-col gap-4'>
-                    <div className='flex flex-col gap-3'>
+                    <div className='flex flex-col gap-3' >
                         <span>Daily Coin</span>
-                        <div className='bg-[#321B55] rounded-lg px-2 py-2'>
+                        <div className={` rounded-lg px-2 py-2 ${dailyReward ? 'bg-[#321B55] opacity-70' : 'bg-[#321B55]'}`} onClick={handleDailyReward}>
                             <img src="#" alt="" />
                             <span>Daily Reward</span>
                             <div className='flex gap-1 items-center'>
                                 <img src="/assets/game/tabler_coin-filled.svg" alt="coin" width="20px" />
-                                <span>+15</span>
+                                <span>+{nextReward}</span>
                             </div>
                         </div>
                     </div>
