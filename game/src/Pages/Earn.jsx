@@ -21,6 +21,7 @@ function Earn({ server }) {
             setNextReward(rewardArr[userData.currentDayInCycle])
         } else {
             console.log('not present')
+            setNextReward(100)
             setDailyReward(false)
         }
         //eslint-disable-next-line
@@ -169,13 +170,13 @@ function Earn({ server }) {
 
         if (response.ok) {
             setDailyReward(true)
-            const { totalIncome, rewardLastClaimed, currentDayInCyle, reward } = data
+            const { totalIncome, rewardLastClaimed, currentDayInCycle, reward } = data
 
             setUserData(prev => ({
                 ...prev,
                 totalIncome,
                 rewardLastClaimed,
-                currentDayInCyle
+                currentDayInCycle
 
             }))
             toast.success(`You got ${reward} coins!`, {
