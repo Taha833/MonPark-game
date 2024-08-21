@@ -75,7 +75,7 @@ function Friends({ server }) {
 
                 <div className='flex text-lg text-white mt-3 gap-2 bg-[#321B55] rounded-lg px-2 py-4 justify-between' >
                     <span>Total friends invited</span>
-                    <span>{userData.friends.length}</span>
+                    <span>{userData.friends.length || 0}</span>
                 </div>
                 <button className='flex text-lg text-white mt-3 gap-2 bg-[#321B55] rounded-lg px-2 py-4 justify-between items-center' onClick={getInviteLink} >
                     <div className='flex flex-col max-w-[250px] text-left'>
