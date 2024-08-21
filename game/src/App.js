@@ -203,17 +203,19 @@ function App() {
 
   console.log(tg.initDataUnsafe.user.id)
 
+  const friendsArr = [5941578108, 347557266, 1657939157, 7089063746, 7256386391, 7233446618, 7077356992, 6119222352]
+
   return (
     <>
       <div className='bg-gradient max-h-screen h-screen overflow-x-auto'>
         <div className='flex flex-col h-full'>
           {!['/', '/friends', '/thankyou', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && friendsArr.some(id => tg.initDataUnsafe.user.id === id) &&
             <Header />}
 
           <Routes>
             <Route path="/waitlist" element={<Waitlist />} exact />
-            {[5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) ?
+            {friendsArr.some(id => tg.initDataUnsafe.user.id === id) ?
               <>
 
                 <Route path="/" element={<Start />} />
@@ -223,7 +225,7 @@ function App() {
                 <Route path="/shop/:section" element={<Shop server={server} />} />
                 <Route path="/kitchen" element={<Kitchen server={server} />} />
                 <Route path="/friends" element={<Friends server={server} />} />
-                <Route path="/earn" element={<Earn server={server}/>} />
+                <Route path="/earn" element={<Earn server={server} />} />
               </>
               :
               <Route path="/" element={
@@ -234,7 +236,7 @@ function App() {
             }
           </Routes>
           {!['/', '/waitlist'].some(route => route === window.location.pathname) &&
-            !/^\/ref\/[^/]+$/.test(window.location.pathname) && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id) &&
+            !/^\/ref\/[^/]+$/.test(window.location.pathname) && friendsArr.some(id => tg.initDataUnsafe.user.id === id) &&
             <Footer />}
         </div>
       </div>

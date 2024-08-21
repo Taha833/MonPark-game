@@ -13,9 +13,10 @@ export const UserDataProvider = ({ children, navigate, location }) => {
     const [initLoad, setInitLoad] = useState(false)
     const [isRefUser, setIsRefUser] = useState(null)
     const { getImgUrl } = useImg()
+    const friendsArr = [5941578108, 347557266, 1657939157, 7089063746, 7256386391, 7233446618, 7077356992, 6119222352]
 
     useEffect(() => {
-        if (window.location.pathname !== "/waitlist" && [5941578108, 347557266, 1657939157, 7089063746, 7256386391].some(id => tg.initDataUnsafe.user.id === id)) {
+        if (window.location.pathname !== "/waitlist" && friendsArr.some(id => tg.initDataUnsafe.user.id === id)) {
 
             console.log('context', userData)
             const checkUser = () => {
