@@ -135,16 +135,52 @@ function House({ server, refMsg, setRefMsg }) {
         })
     }
 
-
     useEffect(() => {
         console.log(poop)
         const egg = document.getElementById('egg')
         const creature = document.getElementById('creature')
+
+        const createPointAnimation = (x, y, value) => {
+            const point = document.createElement('div');
+            point.classList.add('text-2xl', 'w-12', 'h-12', 'text-gray-200', 'font-bold', 'absolute', 'pointer-events-none');
+            point.style.top = `${y}px`;
+            point.style.left = `${x}px`;
+            point.textContent = `+${value}`;
+            document.body.append(point);
+
+            // Animate the point
+            point.animate([
+                { transform: 'translateY(0)', opacity: 1 },
+                { transform: 'translateY(-150px)', opacity: 0 }
+            ], {
+                duration: 1000,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
+
+            // Remove the point after animation ends
+            // setTimeout(() => {
+            //     point.remove();
+            // }, 1000);
+        };
+
+
+
         const handleTouch = (e) => {
             egg.classList.add('scale-95')
             console.log("touches", e.touches.length)
             console.log("targets", e.targetTouches.length)
             console.log("changed", e.changedTouches.length)
+
+                ;[...e.changedTouches].forEach(touch => {
+                    const y = touch.clientY;
+                    const x = touch.clientX;
+                    createPointAnimation(x, y, userData.foodPerTap)
+
+                })
+
+
+
             if (poop === 0) {
                 handleDataChange()
             }
@@ -152,49 +188,19 @@ function House({ server, refMsg, setRefMsg }) {
                 console.log('poop')
                 console.log(poop)
                 handlePoop()
-                setPoop(0)
+                setPoop(0) // not updating
 
             }
             console.log('this is data', userData)
         }
         if ((!incomeModal && egg) || (!incomeModal && creature)) {
             console.log('event init')
-            egg.addEventListener('touchstart', handleTouch)
+            egg.addEventListener('touchstart', e => handleTouch(e))
 
             egg.addEventListener('touchend', e => {
                 egg.classList.remove('scale-95')
 
             })
-
-            document.addEventListener('touchstart', e => {
-                ;[...e.changedTouches].forEach(touch => {
-                    const dot = document.createElement('div')
-                    dot.classList.add('bg-red-500')
-                    dot.classList.add('w-3')
-                    dot.classList.add('h-3')
-                    dot.classList.add('absolute')
-                    dot.style.top = `${touch.pageY}px`
-                    dot.style.left = `${touch.pageX}px`
-                    dot.id = touch.identifier
-
-                    document.body.append(dot)
-                })
-            })
-
-            document.addEventListener('touchend', e => {
-                ;[...e.changedTouches].forEach(touch => {
-                    const dot = document.getElementById(touch.identifier)
-                    dot.remove()
-                })
-            })
-
-            document.addEventListener('touchcancel', e => {
-                ;[...e.changedTouches].forEach(touch => {
-                    const dot = document.getElementById(touch.identifier)
-                    dot && dot.remove()
-                })
-            })
-
         }
 
         return () => {
@@ -210,9 +216,7 @@ function House({ server, refMsg, setRefMsg }) {
 
     return (
 
-        // SHOW ERROR IF THE FEED === 0
-        // SHOW ERROR IF MONEY === 0
-        // ALSO ASK IF THE SHOP ITEMS WILL BE ACCESSIBLE IF THE LEVEL DECREASE DUE TO POOP CONDITIONS
+        // ASK IF THE SHOP ITEMS WILL BE ACCESSIBLE IF THE LEVEL DECREASE DUE TO POOP CONDITIONS
         // REMOVE DOTS
         // STOP THE FETCH REQ IN SHOP IF THE CATEGORY CHANGES
 
