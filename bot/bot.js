@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://a3a9-38-137-59-249.ngrok-free.app'
+const ngrok = 'https://94ea-38-137-19-133.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -596,7 +596,7 @@ Bot.start((ctx) => {
 
 Bot.command('play', async (ctx) => {
     console.log(ctx)
-    ctx.reply('Play game now test',
+    ctx.reply('Play game now',
         {
             reply_markup: {
                 inline_keyboard: [[{
@@ -609,6 +609,22 @@ Bot.command('play', async (ctx) => {
         })
 });
 
+// Bot.command('test', async (ctx) => {
+//     ctx.reply('Welcome! Click the button below to open the mini app.', {
+//         reply_markup: {
+//             keyboard: [
+//                 [{
+//                     text: "Open Mini App",
+//                     web_app: {
+//                         url: ngrok
+//                     }
+//                 }]
+//             ],
+//             resize_keyboard: true,
+//             one_time_keyboard: true,
+//         }
+//     });
+// })
 
 Bot.command('id', async (ctx) => {
     const id = ctx.message.from.id
