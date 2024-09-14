@@ -172,13 +172,14 @@ function House({ server, refMsg, setRefMsg }) {
             console.log("targets", e.targetTouches.length)
             console.log("changed", e.changedTouches.length)
 
+            if (userDataRef.current.foodPerTap < userDataRef.current.foodLeft) {
                 ;[...e.changedTouches].forEach(touch => {
                     const y = touch.clientY;
                     const x = touch.clientX;
                     createPointAnimation(x, y, userData.foodPerTap)
-
                 })
 
+            }
 
 
             if (poop === 0) {
