@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 
 
-const ngrok = 'https://94ea-38-137-19-133.ngrok-free.app'
+const ngrok = 'https://f1c3-2404-7c80-44-7caf-4f1d-6010-4aa3-6bc2.ngrok-free.app'
 
 app.use(cors({
     origin: [
@@ -594,20 +594,20 @@ Bot.start((ctx) => {
 
 //nitishvermaldh01@gmail.com
 
-Bot.command('play', async (ctx) => {
-    console.log(ctx)
-    ctx.reply('Play game now',
-        {
-            reply_markup: {
-                inline_keyboard: [[{
-                    text: 'Open', web_app: {
-                        url: process.env.NODE_ENV === "production" ? 'https://monpark.xyz' : ngrok
-                        // url: 'https://monpark.xyz'
-                    }
-                }]]
-            }
-        })
-});
+// Bot.command('play', async (ctx) => {
+//     console.log(ctx)
+//     ctx.reply('Play game now',
+//         {
+//             reply_markup: {
+//                 inline_keyboard: [[{
+//                     text: 'Open', web_app: {
+//                         url: process.env.NODE_ENV === "production" ? 'https://monpark.xyz' : ngrok
+//                         // url: 'https://monpark.xyz'
+//                     }
+//                 }]]
+//             }
+//         })
+// });
 
 // Bot.command('test', async (ctx) => {
 //     ctx.reply('Welcome! Click the button below to open the mini app.', {
